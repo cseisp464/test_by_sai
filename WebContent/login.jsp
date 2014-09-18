@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Login Page</title>
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
@@ -28,14 +30,12 @@ $(document).ready(function(){
 
 </script>
 
-
 <style type="text/css">
     body{
     	padding-top: 70px;
     }
 
 </style>
-<title>Registration page</title>
 </head>
 <body>
 
@@ -52,51 +52,17 @@ $(document).ready(function(){
 		<div class="jumbotron">
 			<h2 align="center">Welcome to the Online Air Ticket Reservation System!</h2>
 			<br>
-			<form action="RegistrationServlet" method="post" class="form-horizontal">
+			<form action="LoginServlet" method="post" class="form-horizontal">
 				<div class ="row">
 					<div class="col-md-6 col-md-offset-3">
-						<legend><strong>Registration Form</strong></legend>
-						<div class="form-group ">
-							<label for="firstname">First Name</label>
-							<input type="text" 
-								class="form-control" 
-								id="firstname" 
-								name="firstname" 
-								<% if (request.getParameter("firstname")!=null){
-										out.print("value=" + request.getParameter("firstname"));
-										}%>  
-								placeholder="First Name" required autofocus>
-						</div>
-						<div class="form-group">
-							<label for="lastname">Last Name</label>
-							<input type="text" 
-								class="form-control" 
-								id="lastname" 
-								name="lastname"
-								<% if (request.getParameter("lastname")!=null){
-										out.print("value=" + request.getParameter("lastname"));
-										}%>
-								placeholder="Last Name" required>
-						</div>
-						<div class="form-group">
-							<label for="email">Email</label>
-							<input type="email" 
-								class="form-control" 
-								id="email" 
-								name="email"
-								<% if (request.getParameter("email")!=null){
-										out.print("value=" + request.getParameter("email"));
-										}%> 
-								placeholder="Email" required>
-						</div>
+						<legend><strong>Login</strong></legend>
+						
 						<div class="form-group">
 							<label for="username">Username</label> 
 							&nbsp;&nbsp;
-							<span style="color:red; font-size:10px;">
 							<% if (request.getAttribute("username_error")!=null){
 										out.print(request.getAttribute("username_error"));
 										}%>
-							</span>
 							<input type="text" 
 								class="form-control" 
 								id="username" 
@@ -110,6 +76,12 @@ $(document).ready(function(){
 						</div>
 						<div class="form-group">
 							<label for="password1">Password</label>
+							&nbsp;&nbsp;
+							<span style="color:red; font-size:10px;">
+							<% if (request.getAttribute("password_error")!=null){
+										out.print(request.getAttribute("password_error"));
+										}%>
+							</span>
 							<input type="password" 
 								class="form-control" 
 								id="password1" 
@@ -119,24 +91,15 @@ $(document).ready(function(){
 										}%>
 								placeholder="Password" required>
 						</div>
-						<div class="form-group">
-							<label for="password2">Confirm Password</label>
-							<input type="password" 
-								class="form-control" 
-								id="password2" 
-								name="password2" 
-								<% if (request.getParameter("password2")!=null){
-										out.print("value=" + request.getParameter("password2"));
-										}%>
-								placeholder="Re-type Password" required>
-						</div>
-						<button type="submit" id="submit" class="btn btn-primary">Sign up</button>
+						
+						<button type="submit" id="login" class="btn btn-primary">Login</button>
 					</div>
 				</div>
 			</form>
 			
 		</div>
 	</div>
+
 
 </body>
 </html>

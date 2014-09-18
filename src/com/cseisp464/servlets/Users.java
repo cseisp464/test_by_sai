@@ -19,9 +19,12 @@ import org.xml.sax.InputSource;
  */
 public class Users {
 	private String fname,lname,email,uname,passwd1,passwd2;
+	private final String path_to_properties_file;
 	
-	public Users(){
+	public Users(String path){
 		
+		path_to_properties_file = path+"\\WEB-INF\\classes\\users.properties";
+		System.out.println(path_to_properties_file);
 	}
 	
 	public void addUser(String firstname, String lastname, String emailAddress, String username, String password1, String password2) throws IOException{
@@ -37,7 +40,9 @@ public class Users {
 		String key = uname;
 		String value = fname+","+lname+","+email+","+passwd1+","+passwd2;
 		userProperty.setProperty(key,value);
-		File file = new File("user.properties");
+		//File file = new File("user.properties");
+		File file = new File(path_to_properties_file);
+		//path_to_properties_file
 		FileOutputStream fileOut = new FileOutputStream(file,true);
 		userProperty.store(fileOut, null);
 		fileOut.close();
@@ -48,13 +53,30 @@ public class Users {
 		Properties p = new Properties();
 		InputStream is = null;
 		boolean status = false;
-		
-		is = new FileInputStream("user.properties");
+		System.out.println("HELLO WORLD" +path_to_properties_file);
+		is = new FileInputStream(path_to_properties_file);
 		p.load(is);
 		status = p.containsKey(username);
 		is.close();
 		return status;
 		
+	}
+	
+	public boolean authenticateUser(String username, String passwd) throws IOException{
+		
+		Properties p = new Properties();
+		InputStream is = null;
+		is = new FileInputStream(path_to_properties_file);
+		p.load(is);
+		String[] values = p.getProperty(username).split(",");
+		if(values[4].equals(passwd)){
+			is.close();
+			return true;
+		}
+		else{
+			is.close();
+			return false;
+		}
 	}
 	
 }
