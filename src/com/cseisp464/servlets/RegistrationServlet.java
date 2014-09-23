@@ -2,6 +2,9 @@ package com.cseisp464.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,32 +47,30 @@ public class RegistrationServlet extends HttpServlet {
 		
 		out.println("<html><body>");
 		
-		// Handle form data correctly
-		
+		// Handle form data correctly		
 		String fname = request.getParameter("firstname");
 		String lname = request.getParameter("lastname");
 		String email = request.getParameter("email");
 		String uname = request.getParameter("username");
 		String passwd1 = request.getParameter("password1");
-		String passwd2 = request.getParameter("password2");
 		
 		Users newUser = new Users(this.getServletContext().getRealPath("/"));
 		
-		if(!newUser.checkUser(uname)){
-			newUser.addUser(fname,lname,email,uname,passwd1,passwd2);
-			//out.println("<h1>Hello " +fname+" "+ lname+ "</h1>");
+		// Check if the username exists
+		if(!newUser.checkIfUserExists(uname)){ // If the username does not exist then add the user info and redirect the user to login page
+			
+			try {
+				newUser.addUser(fname,lname,email,uname,passwd1);
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			response.sendRedirect("login.jsp");
-			// redirect to login page
-		}else{
-			//out.println("Username is already taken");
-			request.setAttribute("username_error", "Username is already taken");
+		}else{ // If the username exists then ask the user to sign up using a different username
+			request.setAttribute("username_error", "Username is already taken! Please choose a new one");
 			RequestDispatcher rd = request.getRequestDispatcher("signup.jsp") ;
 			rd.include(request, response);
 		}
-
-		out.println("</html></body>");
-		
-		//out.println("Default directory is: " + System.getProperty("user.dir"));
 		
 	}
 

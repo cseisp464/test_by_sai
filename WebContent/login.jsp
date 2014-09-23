@@ -16,8 +16,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script>
 
+<script>
+// script for comparing passwords
 $(document).ready(function(){
 	$("#submit").click(function(event){
 		if($('#password1').val()!= $('#password2').val()){
@@ -50,8 +51,9 @@ $(document).ready(function(){
 	
 	<div class="container">
 		<div class="jumbotron">
-			<h2 align="center">Welcome to the Online Air Ticket Reservation System!</h2>
-			<br>
+			<h2 align="center">Welcome to the Online Air Ticket Reservation System!</h2> <br>
+			
+			<!-- Login Form -->
 			<form action="LoginServlet" method="post" class="form-horizontal">
 				<div class ="row">
 					<div class="col-md-6 col-md-offset-3">
@@ -59,44 +61,59 @@ $(document).ready(function(){
 						
 						<div class="form-group">
 							<label for="username">Username</label> 
+							
 							&nbsp;&nbsp;
+							<span style="color:red; font-size:10px;">
 							<% if (request.getAttribute("username_error")!=null){
 										out.print(request.getAttribute("username_error"));
 										}%>
-							<input type="text" 
+							</span>
+										
+							<input 
+								type="text" 
 								class="form-control" 
 								id="username" 
 								name="username"
-								placeholder="Username"
+								
 								required
 								<% if (request.getParameter("username")!=null){
 										out.print("value=" + request.getParameter("username"));
 										}%> 
 								 >
 						</div>
+						
+						
 						<div class="form-group">
 							<label for="password1">Password</label>
 							&nbsp;&nbsp;
+							
 							<span style="color:red; font-size:10px;">
 							<% if (request.getAttribute("password_error")!=null){
 										out.print(request.getAttribute("password_error"));
 										}%>
 							</span>
-							<input type="password" 
+							
+							<input 
+								type="password" 
 								class="form-control" 
 								id="password1" 
 								name="password1" 
 								<% if (request.getParameter("password1")!=null){
 										out.print("value=" + request.getParameter("password1"));
 										}%>
-								placeholder="Password" required>
+								 required>
 						</div>
 						
 						<button type="submit" id="login" class="btn btn-primary">Login</button>
+						
+						<a href="signup.jsp" class="pull-right">New User! Click here to sign up.</a>
+						
+
 					</div>
 				</div>
 			</form>
 			
+			<br>
 		</div>
 	</div>
 

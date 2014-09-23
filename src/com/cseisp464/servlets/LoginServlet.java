@@ -2,6 +2,7 @@ package com.cseisp464.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -48,19 +49,28 @@ public class LoginServlet extends HttpServlet {
 		
 		Users newUser = new Users(this.getServletContext().getRealPath("/"));
 		
-		if(!newUser.checkUser(uname)){
+		if(!newUser.checkIfUserExists(uname)){
 			// User not present, so redirect the user to registration page
-			//out.println("<h1>Hello " +fname+" "+ lname+ "</h1>");
-			// redirect to login page
+			response.sendRedirect("signup.jsp");
+			
+			//request.setAttribute("username_error", "Username not found in our records! Please Sign up.");
+			//RequestDispatcher rd = request.getRequestDispatcher("login.jsp") ;
+			//rd.include(request, response);
+			
 		}else{
 			// User exists, so verify password
-			if(newUser.authenticateUser(uname,passwd1)){
-				out.println("<h1>Authenticated</h1>");
-			}
-			else{
-				request.setAttribute("password_error", "Incorrect password! Try again.");
-				RequestDispatcher rd = request.getRequestDispatcher("login.jsp") ;
-				rd.include(request, response);
+			try {
+				if(newUser.authenticateUser(uname,passwd1)){
+					response.sendRedirect("flightSearchQuery.jsp");
+				}
+				else{
+					request.setAttribute("password_error", "Incorrect password! Try again.");
+					RequestDispatcher rd = request.getRequestDispatcher("login.jsp") ;
+					rd.include(request, response);
+				}
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 		}

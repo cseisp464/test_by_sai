@@ -14,8 +14,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script>
 
+<script>
+//script for comparing passwords
 $(document).ready(function(){
 	$("#submit").click(function(event){
 		if($('#password1').val()!= $('#password2').val()){
@@ -56,39 +57,49 @@ $(document).ready(function(){
 				<div class ="row">
 					<div class="col-md-6 col-md-offset-3">
 						<legend><strong>Registration Form</strong></legend>
+						
 						<div class="form-group ">
 							<label for="firstname">First Name</label>
-							<input type="text" 
+							<input 
+								type="text" 
 								class="form-control" 
 								id="firstname" 
 								name="firstname" 
 								<% if (request.getParameter("firstname")!=null){
 										out.print("value=" + request.getParameter("firstname"));
 										}%>  
-								placeholder="First Name" required autofocus>
+								required autofocus>
 						</div>
+						
+						
 						<div class="form-group">
 							<label for="lastname">Last Name</label>
-							<input type="text" 
+							<input 
+								type="text" 
 								class="form-control" 
 								id="lastname" 
 								name="lastname"
 								<% if (request.getParameter("lastname")!=null){
 										out.print("value=" + request.getParameter("lastname"));
 										}%>
-								placeholder="Last Name" required>
+								required>
 						</div>
+						
+						
 						<div class="form-group">
 							<label for="email">Email</label>
-							<input type="email" 
+							<input 
+								type="email" 
 								class="form-control" 
 								id="email" 
 								name="email"
 								<% if (request.getParameter("email")!=null){
 										out.print("value=" + request.getParameter("email"));
 										}%> 
-								placeholder="Email" required>
+								required>
 						</div>
+						
+						
 						<div class="form-group">
 							<label for="username">Username</label> 
 							&nbsp;&nbsp;
@@ -97,39 +108,47 @@ $(document).ready(function(){
 										out.print(request.getAttribute("username_error"));
 										}%>
 							</span>
-							<input type="text" 
+							<input 
+								type="text" 
 								class="form-control" 
 								id="username" 
 								name="username"
-								placeholder="Username"
 								required
 								<% if (request.getParameter("username")!=null){
 										out.print("value=" + request.getParameter("username"));
 										}%> 
 								 >
 						</div>
+						
+						
 						<div class="form-group">
 							<label for="password1">Password</label>
-							<input type="password" 
+							<input 
+								type="password" 
 								class="form-control" 
 								id="password1" 
 								name="password1" 
 								<% if (request.getParameter("password1")!=null){
 										out.print("value=" + request.getParameter("password1"));
 										}%>
-								placeholder="Password" required>
+								required>
 						</div>
+						
+						
 						<div class="form-group">
-							<label for="password2">Confirm Password</label>
-							<input type="password" 
+							<label for="password2">Re-enter Password</label>
+							<input 
+								type="password" 
 								class="form-control" 
 								id="password2" 
 								name="password2" 
 								<% if (request.getParameter("password2")!=null){
 										out.print("value=" + request.getParameter("password2"));
 										}%>
-								placeholder="Re-type Password" required>
+								required>
 						</div>
+						
+						
 						<button type="submit" id="submit" class="btn btn-primary">Sign up</button>
 					</div>
 				</div>
