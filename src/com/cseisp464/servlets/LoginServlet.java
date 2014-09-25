@@ -44,18 +44,17 @@ public class LoginServlet extends HttpServlet {
 		
 		out.println("<html><body>");
 		
+		// Retrieving the username and password form the POST data.
 		String uname = request.getParameter("username");
 		String passwd1 = request.getParameter("password1");
 		
+		// Creating an instance of the user class with project's root path as the parameter to the constructor
 		Users newUser = new Users(this.getServletContext().getRealPath("/"));
 		
+		// Check if the username exists
 		if(!newUser.checkIfUserExists(uname)){
 			// User not present, so redirect the user to registration page
 			response.sendRedirect("signup.jsp");
-			
-			//request.setAttribute("username_error", "Username not found in our records! Please Sign up.");
-			//RequestDispatcher rd = request.getRequestDispatcher("login.jsp") ;
-			//rd.include(request, response);
 			
 		}else{
 			// User exists, so verify password
@@ -63,7 +62,7 @@ public class LoginServlet extends HttpServlet {
 				if(newUser.authenticateUser(uname,passwd1)){
 					response.sendRedirect("flightSearchQuery.jsp");
 				}
-				else{
+				else{ // Incorrect password, so send an error message
 					request.setAttribute("password_error", "Incorrect password! Try again.");
 					RequestDispatcher rd = request.getRequestDispatcher("login.jsp") ;
 					rd.include(request, response);

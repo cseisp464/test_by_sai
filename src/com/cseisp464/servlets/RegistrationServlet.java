@@ -47,13 +47,14 @@ public class RegistrationServlet extends HttpServlet {
 		
 		out.println("<html><body>");
 		
-		// Handle form data correctly		
+		// Retrieving the user's info form the POST data.
 		String fname = request.getParameter("firstname");
 		String lname = request.getParameter("lastname");
 		String email = request.getParameter("email");
 		String uname = request.getParameter("username");
 		String passwd1 = request.getParameter("password1");
 		
+		// Creating an instance of the user class with project's root path as the parameter to the constructor
 		Users newUser = new Users(this.getServletContext().getRealPath("/"));
 		
 		// Check if the username exists
