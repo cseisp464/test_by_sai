@@ -75,6 +75,8 @@
 			            </tr>
 			        </tbody>
 			    </table>
+			    
+			    <a href="login.jsp" class="btn btn-default pull-right">Logout</a>
 
 		</div>
 	</div>

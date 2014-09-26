@@ -107,6 +107,9 @@ $(document).ready(function(){
 						<button type="submit" id="search" class="btn btn-primary">Search</button>
 						
 						<a href="bookingHistory.jsp" class="btn btn-success">View my Booking History</a>
+						
+						<a href="login.jsp" class="btn btn-default pull-right">Logout</a>
+
 
 					</div>
 				</div>

@@ -69,10 +69,18 @@ $(document).ready(function(){
 								<td>36</td>
 								<td>9/14/2014</td>
 							</tr>
+							
+							<tr>
+								<td>3</td>
+								<td>16</td>
+								<td>10/14/2014</td>
+							</tr>
 						</tbody>
 					</table>
 										
 					<a href="flightSearchQuery.jsp" class="btn btn-success">Home</a>
+					
+					<a href="login.jsp" class="btn btn-default pull-right">Logout</a>
 
        </div>
 				</div>

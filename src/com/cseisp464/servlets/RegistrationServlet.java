@@ -55,7 +55,7 @@ public class RegistrationServlet extends HttpServlet {
 		String passwd1 = request.getParameter("password1");
 		
 		// Creating an instance of the user class with project's root path as the parameter to the constructor
-		Users newUser = new Users(this.getServletContext().getRealPath("/"));
+		Users newUser = new Users(this.getServletContext().getRealPath("/")); 
 		
 		// Check if the username exists
 		if(!newUser.checkIfUserExists(uname)){ // If the username does not exist then add the user info and redirect the user to login page

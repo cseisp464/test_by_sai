@@ -149,6 +149,8 @@ line-height: 40px;
 					       
 					       <a href="flightSearchQuery.jsp" class="btn btn-warning">Home</a>
 					       
+					       <a href="login.jsp" class="btn btn-default pull-right">Logout</a>
+					       
 					       </div>
 				</div>
 			</form>

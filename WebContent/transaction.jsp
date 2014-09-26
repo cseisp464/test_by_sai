@@ -157,6 +157,7 @@ line-height: 40px;
 						<a href="flightSearchQuery.jsp" class="btn btn-success">Cancel</a>
 						&nbsp;&nbsp;
 						
+						<a href="login.jsp" class="btn btn-default pull-right">Logout</a>
 
 					</div>
 				</div>
