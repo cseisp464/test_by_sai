@@ -12,6 +12,9 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.xml.sax.InputSource;
@@ -23,10 +26,11 @@ import org.xml.sax.InputSource;
 public class Users {
 	private String fname,lname,email,uname,passwd,hash;
 	private final String path_to_properties_file;
+	private JDBCHelper db;
 	
 	public Users(String path){
 		// Storing the path to the properties file
-		path_to_properties_file = path+"\\WEB-INF\\classes\\users.properties";
+		path_to_properties_file = path+"\\WEB-INF\\classes\\users.properties";		
 	}
 	
 	public void addUser(String firstname, String lastname, String emailAddress, String username, String password) throws IOException, NoSuchAlgorithmException{
@@ -37,78 +41,137 @@ public class Users {
 		uname = username;
 		passwd = password;
 		
-		Properties userProperty = new Properties();
-		String key = uname;
 		String salt = getSalt();
-		String value = fname+","+lname+","+email+","+ computeHash(passwd, salt)+","+salt;
-		// set the property value, and write it into a properties file
-		userProperty.setProperty(key,value);
-		File file = new File(path_to_properties_file);
-		FileOutputStream fileOut = new FileOutputStream(file,true);
-		// writing into the properties file and saving to disk
-		userProperty.store(fileOut, null);
-		fileOut.close();
+		
+		// List to hold the user info 
+		ArrayList<Object> param =  new ArrayList<Object>();
+		param.add(fname);
+		param.add(lname);
+		param.add(email);
+		param.add(computeHash(passwd, salt));
+		param.add(salt);
+		param.add(uname);
+		
+		String query_string = "INSERT INTO USERS values (default, ?, ?, ?, ?, ?, ?)";
+		
+		connectDB();
+		
+		int result = db.updateDB(query_string, param);
+		
+		if(result>0){
+			System.out.println("Successfully added a user");
+		}else{
+			System.out.println("oops! something went wrong");
+		}
+		
+		closeDB();
+		
 	}
 	
-	public boolean checkIfUserExists(String username) throws IOException{
+	/*public boolean checkIfUserExists(String username) throws IOException, SQLException{
 		
-		Properties p = new Properties();
-		InputStream is = null;
 		boolean status = false;
 		
-		File f = new File(path_to_properties_file);
-		// create the properties file if it doesn't exist.
-		if(!f.exists()){
-			f.createNewFile();
-		}
-				
-		is = new FileInputStream(f);
+		// List to hold the username 
+		ArrayList<Object> param =  new ArrayList<Object>();
+		// Adding the username to the list
+		param.add(username);
+		// Composing the query to check if the user exists
+		String query_string = "SELECT * FROM USERS" + " WHERE username = ? ";
 		
-		// load the properties file
-		p.load(is);
-		// check for the keys in the properties file against the username
-		status = p.containsKey(username);
-		is.close();
+		connectDB();
+		
+		ResultSet rs1 = db.queryDB(query_string, param);
+
+		// Checking if record exists
+		if(rs1.next()){
+			status = true;
+		}
+		
+		closeDB();
+		return status;
+		
+	}*/
+	
+	
+	/***
+	 * This function checks if username or email already exists in the USERS table.
+	 * If checking for username then the column_name should be exactly the name of the 'username' column in the USERS table 
+	 * and the value will be the retrieved user name from the POST data of the form
+	 * If checking for email then the column_name should be exactly the name of the 'email' column in the USERS table 
+	 * and the value will be the retrieved email from the POST data of the form
+	 * @param column_name
+	 * @param value
+	 * @return
+	 * @throws IOException
+	 * @throws SQLException
+	 */
+	public boolean checkIfValueExists(String column_name, String value) throws IOException, SQLException{
+		
+		boolean status = false;
+		
+		// List to hold the username 
+		ArrayList<Object> param =  new ArrayList<Object>();
+		// Adding the username to the list
+		param.add(value);
+		// Composing the query to check if the user exists
+		String query_string = "SELECT * FROM USERS" + " WHERE " + column_name + " = ? ";
+		
+		connectDB();
+		
+		ResultSet rs1 = db.queryDB(query_string, param);
+
+		// Checking if record exists
+		if(rs1.next()){
+			status = true;
+		}
+		
+		closeDB();
 		return status;
 		
 	}
 	
-	public boolean authenticateUser(String username, String passwd) throws IOException, NoSuchAlgorithmException{
+	public boolean authenticateUser(String username, String entered_password) throws IOException, NoSuchAlgorithmException, SQLException{
 		
-		Properties p = new Properties();
-		InputStream is = null;
-		is = new FileInputStream(path_to_properties_file);
-		// load the properties file
-		p.load(is);
-		// splitting the values of a key(username) separated by comma into a string array
-		String[] values = p.getProperty(username).split(",");
+		// List to hold the username 
+		ArrayList<Object> param =  new ArrayList<Object>();
+		// Adding the username to the list
+		param.add(username);
+		// Composing the query to check if the user exists
+		String query_string = "SELECT * FROM USERS" +  " WHERE username = ? ";
 		
-		// Comparing the passwords : Encode the entered password along with the stored salt value (values[4]) to calculate the hash. 
-     	// After calculating the hash, compare it with the hash stored in the properties file (values[3]). 
-     	// If both of hashes match then the user is an authenticated user
+		connectDB();
 		
-        String calulatedHash = computeHash(passwd, values[4]);
-        
-        //closing the properties file input stream
-        is.close();
-        			
-		if(calulatedHash.equals(values[3])){
+		ResultSet rs1 = db.queryDB(query_string, param);
+		// Moving the ResultSet cursor to first row
+		rs1.next();
+		
+		// Comparing the passwords : Encode the entered password along with the stored salt value to calculate the hash. 
+		// After calculating the hash, compare it with the hashed password stored in the database USERS table. 
+		// If both of hashes match then the user is an authenticated user
+		
+		String stored_salt = rs1.getString("salt");
+		String stored_password = rs1.getString("password");
+		
+		String calculated_hash = computeHash(entered_password, stored_salt);
+		
+		if(stored_password.equals(calculated_hash)){
 			return true;
-		}
-		else{
+		}else{
 			return false;
 		}
 	}
 	
 	private String getSalt() throws NoSuchAlgorithmException{
+		
 		// Using a SecureRandom generator to generate salt for more protected password hashing
-	    SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-	    // Create array for salt
-	    byte[] salt = new byte[16];
-	    // Get a random salt
-	    sr.nextBytes(salt);
-	    // Converting to string and Storing the salt
-	    return salt.toString();
+		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+		// Create array for salt
+		byte[] salt = new byte[16];
+		// Get a random salt
+		sr.nextBytes(salt);
+		// Converting to string and Storing the salt
+		return salt.toString();
 	}
 	
 	private String computeHash(String password, String salt) throws NoSuchAlgorithmException{
@@ -128,5 +191,15 @@ public class Users {
         // Get complete hashed password in hex format
         return sb.toString();
 	}
+	
+	private void connectDB(){
+		// Testing Database Connection using the JDBC Helper class
+		db = new JDBCHelper("cse.unl.edu", "spalusa", "spalusa", "Test@464");
+	}
+	
+	private void closeDB(){
+		db.closeDBConnection();
+	}
+	
 	
 }

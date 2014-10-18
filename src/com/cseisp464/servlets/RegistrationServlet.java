@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -54,23 +55,39 @@ public class RegistrationServlet extends HttpServlet {
 		String uname = request.getParameter("username");
 		String passwd1 = request.getParameter("password1");
 		
+		
 		// Creating an instance of the user class with project's root path as the parameter to the constructor
 		Users newUser = new Users(this.getServletContext().getRealPath("/")); 
 		
 		// Check if the username exists
-		if(!newUser.checkIfUserExists(uname)){ // If the username does not exist then add the user info and redirect the user to login page
-			
-			try {
-				newUser.addUser(fname,lname,email,uname,passwd1);
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		try {
+			if(!newUser.checkIfValueExists("username", uname) && !newUser.checkIfValueExists("email", email)){ // If the username does not exist then add the user info and redirect the user to login page
+				
+				try {
+					newUser.addUser(fname,lname,email,uname,passwd1);
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				response.sendRedirect("login.jsp");
+			}else{ 
+				if(newUser.checkIfValueExists("username", uname)){
+					// If the username exists then ask the user to sign up using a different username
+					request.setAttribute("username_error", "Username is already taken! Please choose a new one");
+					
+				}
+				if(newUser.checkIfValueExists("email", email)){
+					// If the email exists then ask the user to sign up using a different email or ask him if he/she forgot password
+					request.setAttribute("email_error", "Email is already registered! Please try logging in");
+					
+				}
+				RequestDispatcher rd = request.getRequestDispatcher("signup.jsp") ;
+				rd.include(request, response);
+				
 			}
-			response.sendRedirect("login.jsp");
-		}else{ // If the username exists then ask the user to sign up using a different username
-			request.setAttribute("username_error", "Username is already taken! Please choose a new one");
-			RequestDispatcher rd = request.getRequestDispatcher("signup.jsp") ;
-			rd.include(request, response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}

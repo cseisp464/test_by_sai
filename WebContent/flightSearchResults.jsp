@@ -1,3 +1,4 @@
+<%@ page import="java.sql.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -32,7 +33,38 @@
 	<div class="container">
 		<div class="jumbotron">
 			<h2 align="center">Flight Search Results</h2> <br>
+			
+			<% //out.print(request.getAttribute("departure_results"));
+				
+			ResultSet rs1 = (ResultSet) request.getAttribute("departure_results");
+				
+				while (rs1.next()){
+					out.print(rs1.getString("plane") + " " + rs1.getString("operator") + " " + rs1.getString("source") + " " + rs1.getString("destination") + " " + rs1.getTimestamp("departure") + " " + rs1.getTimestamp("arrival"));
+				}
+				
+				
+				%>
+			
+				<table class="table table-striped">
+			        <thead>
+			            <tr>
+			                <th>Flight No.</th>
+			                <th>Operator</th>
+			                <th>Departure Time</th>
+			                <th>Arrival Time</th>
+			                <th>Number of Stops</th>
+			                <th>Cost</th>
+			                <th>View and Book</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			        
 
+			        </tbody>
+			    </table>
+
+
+			    <!--  
 			    <table class="table table-striped">
 			        <thead>
 			            <tr>
@@ -75,6 +107,8 @@
 			            </tr>
 			        </tbody>
 			    </table>
+			    
+			     -->
 			    
 			    <a href="login.jsp" class="btn btn-default pull-right">Logout</a>
 

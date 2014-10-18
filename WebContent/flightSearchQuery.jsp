@@ -6,6 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Flight Search Query</title>
 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
@@ -72,21 +74,55 @@ $(document).ready(function(){
 		}
 	    
 	  });
+	
+	  $('.dropdown').hover(
+		      function() {
+		        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn();
+		      }, 
+		      function() {
+		        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut();
+		      }
+		    );
+
 });
 
 </script>
+<style>
+
+.paddingDiv{
+	padding-right:50px;
+}
+
+</style>
+
 
 </head>
 <body>
 
-	<nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="container">
-			<div class="navbar-header">
+
+<nav role="navigation" class="navbar navbar-default navbar-inverse navbar-fixed-top">
+	<div class="container">
+        <div class="navbar-header">
 				<a class="navbar-brand" href="#">Airline Reservation System</a>
-			</div>
 		</div>
-	</nav>
+        <!-- Collection of nav links, forms, and other content for toggling -->
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Sign in / Register <b class="caret"></b></a>
+                    <ul role="menu" class="dropdown-menu">
+                        <li><a href="#">My account</a></li>
+                        <li><a href="signup.jsp">Register</a></li>
+                        <li><a href="bookingHistory.jsp">Booking History</a></li>
+                        <li class="divider"></li>
+                        <li><a href="login.jsp">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+     </div>
+</nav>
+	
 	
 	<div class="container">
 		<div class="jumbotron">
@@ -96,89 +132,104 @@ $(document).ready(function(){
 				<div class ="row">
 					<div class="col-md-6 col-md-offset-3">
 						
-						<div class="btn-group" data-toggle="buttons">
-						  <label class="active">
-						    <input type="radio" name="roundtrip" id="roundtrip" checked> Roundtrip
-						  </label>
-						  <label>
-						    <input type="radio" name="oneway" id="oneway"> One way
-						  </label>
-						  <label>
-						    <input type="radio" name="multicity" id="multicity"> Multicity
-						  </label>
-						</div>
+						<div class="col-md-12">
+							<div class="btn-group" data-toggle="buttons">
+							  <label class="active paddingDiv">
+							    <input type="radio" name="roundtrip" id="roundtrip" checked> Roundtrip
+							  </label>
+							  <label class="paddingDiv">
+							    <input type="radio" name="oneway" id="oneway"> One way
+							  </label>
+							  <label class="paddingDiv">
+							    <input type="radio" name="multicity" id="multicity"> Multicity
+							  </label>
+							</div>
+				        </div>
 				        
-						<div class="form-group">
-							<label for="source">From</label> 		
-							<input 
-								type="text" 
-								class="form-control" 
-								id="source" 
-								name="source"
-								required> 
-						</div>
-						
-						<div class="form-group">
-							<label for="destination">To</label> 		
-							<input
-								type="text" 
-								class="form-control" 
-								id="destination" 
-								name="destination"
-								required>  
-						</div>
-						
-						<div class="form-group">
-							<label for="travelDepartingDate">Departing</label> 		
-							<input
-								type="text" 
-								class="form-control" 
-								id="travelDepartingDate" 
-								name="travelDepartingDate"
-								required>  
-						</div>
-						
-						<div class="form-group">
-							<label for="travelReturningDate">Returning</label> 		
-							<input
-								type="text" 
-								class="form-control" 
-								id="travelReturningDate" 
-								name="travelReturningDate"
-								required>  
+				        <div class="col-md-6 paddingDiv">
+							<div class="form-group">
+								<label for="source">From</label> 		
+								<input 
+									type="text" 
+									class="form-control" 
+									id="source" 
+									name="source"
+									required> 
+							</div>
 						</div>
 						
 						
-						<div class="form-group">
-							<label for="number_of_passengers">Passengers</label> 		
-							<input
-								type="text" 
-								class="form-control" 
-								id="number_of_passengers" 
-								name="number_of_passengers"
-								required>  
+						<div class="col-md-6 paddingDiv">	
+							<div class="form-group">
+								<label for="destination">To</label> 		
+								<input
+									type="text" 
+									class="form-control" 
+									id="destination" 
+									name="destination"
+									required>  
+							</div>
 						</div>
 						
-						<div class="form-group">
-							<label for="ticketClass">Class</label> 		
-															
-							<select class="form-control" id="ticket_class" name="ticket_class">
- 
-							  <option value="Economy">Economy</option>
-							 
-							  <option value="First">First</option>
-							 
-							  <option value="Business">Business</option>
-							  
-							</select>	
+						
+						<div class="col-md-6 paddingDiv">
+							<div class="form-group">
+								<label for="travelDepartingDate">Departing</label> 		
+								<input
+									type="text" 
+									class="form-control" 
+									id="travelDepartingDate" 
+									name="travelDepartingDate"
+									required>  
+							</div>
+						</div>
+						
+						<div class="col-md-6 paddingDiv">
+							<div class="form-group">
+								<label for="travelReturningDate">Returning</label> 		
+								<input
+									type="text" 
+									class="form-control" 
+									id="travelReturningDate" 
+									name="travelReturningDate"
+									required>  
+							</div>
+						</div>	
+							
+						<div class="col-md-6 paddingDiv">	
+							<div class="form-group">
+								<label for="number_of_passengers">Passengers</label> 		
+								<input
+									type="text" 
+									class="form-control" 
+									id="number_of_passengers" 
+									name="number_of_passengers"
+									required>  
+							</div>
+						</div>
+							
+						<div class="col-md-6 paddingDiv">	
+							<div class="form-group">
+								<label for="ticketClass">Class</label> 		
+																
+								<select class="form-control" id="ticket_class" name="ticket_class">
+	 
+								  <option value="Economy">Economy</option>
+								 
+								  <option value="First">First</option>
+								 
+								  <option value="Business">Business</option>
 								  
+								</select>	
+									  
+							</div>
 						</div>
-											
-						<button type="submit" id="search" class="btn btn-primary">Search</button>
 						
-						<a href="bookingHistory.jsp" class="btn btn-success">View my Booking History</a>
+						<button type="submit" id="search" class="btn btn-primary">Search</button>					
 						
-						<a href="login.jsp" class="btn btn-default pull-right">Logout</a>
+						<!-- <a href="bookingHistory.jsp" class="btn btn-success">View my Booking History</a>
+						
+						 <a href="login.jsp" class="btn btn-default pull-right">Logout</a>  -->
 
 
 					</div>

@@ -88,6 +88,12 @@ $(document).ready(function(){
 						
 						<div class="form-group">
 							<label for="email">Email</label>
+							&nbsp;&nbsp;
+							<span style="color:red; font-size:10px;">
+							<% if (request.getAttribute("email_error")!=null){
+										out.print(request.getAttribute("email_error"));
+										}%>
+							</span>
 							<input 
 								type="email" 
 								class="form-control" 

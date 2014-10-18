@@ -37,6 +37,23 @@ $(document).ready(function(){
     }
 
 </style>
+
+<%-- Cookie --%>
+<%
+String cookieName = "username";
+Cookie[] cookies = request.getCookies(); 
+Cookie myCookie = null;
+if(cookies != null){
+	for(int i=0;i<cookies.length; i++){
+		if(cookieName.equals(cookies[i].getName())){
+			myCookie = cookies[i];
+			break;
+		}
+	}
+}
+%>
+
+
 </head>
 <body>
 
@@ -64,9 +81,11 @@ $(document).ready(function(){
 							
 							&nbsp;&nbsp;
 							<span style="color:red; font-size:10px;">
-							<% if (request.getAttribute("username_error")!=null){
+							<% 
+							if (request.getAttribute("username_error")!=null){
 										out.print(request.getAttribute("username_error"));
-										}%>
+										}		
+							%>
 							</span>
 										
 							<input 
@@ -76,9 +95,15 @@ $(document).ready(function(){
 								name="username"
 								
 								required
-								<% if (request.getParameter("username")!=null){
+								<% 
+								if (request.getParameter("username")!=null){
 										out.print("value=" + request.getParameter("username"));
-										}%> 
+								}
+								else if(myCookie != null){
+									out.print("value=" + myCookie.getValue());
+								}
+										
+								%> 
 								 >
 						</div>
 						
@@ -104,6 +129,11 @@ $(document).ready(function(){
 								 required>
 						</div>
 						
+						<div class="form-group checkbox">
+            				<label><input type="checkbox" id="rememberMe" name="rememberMe"> Remember me</label>
+        				</div>
+						
+						<br/>
 						<button type="submit" id="login" class="btn btn-primary">Login</button>
 						
 						<a href="signup.jsp" class="pull-right">New User! Click here to sign up.</a>

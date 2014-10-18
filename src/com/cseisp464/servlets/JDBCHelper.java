@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class JDBCHelper {
 	
 	public Connection conn;
+	public Connection dbConnection;
 
 	public JDBCHelper(String host, String db, String user, String password){
 		this.conn = this.initiateConnection(host, db, user, password);
@@ -55,7 +56,7 @@ public class JDBCHelper {
 	 */
 	public Connection initiateConnection(String host, String db, String user, String password){
 
-		Connection dbConnection = null;
+		dbConnection = null;
 
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -108,7 +109,9 @@ public class JDBCHelper {
 				}
 				i++;
 			}
+			
 			rs = ps.executeQuery();
+			
 		}catch (SQLException e){
 			e.printStackTrace();
 			return null;
@@ -116,9 +119,53 @@ public class JDBCHelper {
 		return rs;
 	}
 	
+
+	/**
+	 * 
+	 * 
+	 * @param query SQL Data Manipulation Language (DML) statements, such as INSERT, UPDATE or DELETE; or an SQL statement that returns nothing, such as a DDL statement.
+	 * Use ? for parameters and the sqlParam parameters to pass in values. 
+	 * @param sqlParam An ArrayList of objects of parameters for the Select Statement.
+	 * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
+	 */
+	public <T> int updateDB(String query, ArrayList<T> sqlParam){
+		PreparedStatement ps = null;
+		int rs = 0;
+		try{
+			ps = conn.prepareStatement(query);
+
+			int i = 1;
+			for (T a : sqlParam){
+				//System.out.println(a.getClass());
+				if (a.getClass() == String.class){
+					ps.setString(i, (String)a);
+					//System.out.println(String.format("I'm a String!  %d - %s", i, (String) a));
+				}else if(a.getClass() == Integer.class){
+					ps.setInt(i, (Integer)a);
+					//System.out.println(String.format("I'm an Integer!  %d - %d", i, (Integer) a));
+				}else if(a.getClass() == Double.class){
+					ps.setDouble(i, (Double)a);
+					//System.out.println(String.format("I'm a Double!  %d - %f", i, (Double) a));
+				}else if (a.getClass() == Timestamp.class){
+					ps.setTimestamp(i, (Timestamp)a);
+					//System.out.println(String.format("I'm a DateTime!  %d - %s", i, a.toString()));
+				}
+				i++;
+			}
+			
+			rs = ps.executeUpdate();
+			
+		}catch (SQLException e){
+			e.printStackTrace();
+			return 0;
+		}
+		return rs;
+	}
+	
 	public void closeDBConnection(){
 		try {
 			conn.close();
+			dbConnection.close();
 			System.out.println("Database Connection Closed");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

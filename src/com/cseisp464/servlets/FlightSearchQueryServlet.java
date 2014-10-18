@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Formatter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -67,9 +68,14 @@ public class FlightSearchQueryServlet extends HttpServlet {
 		String[] arrdate = formatDate(arrival_date); 
 		
 		// Query for Departure
-		getResults(source, destination, deptdate, db);
+		ResultSet rs_departure = getResults(source, destination, deptdate, db);
+		
+		request.setAttribute("departure_results", rs_departure);
+		RequestDispatcher rd = request.getRequestDispatcher("flightSearchResults.jsp") ;
+		rd.include(request, response);
+		
 		// Query for Arrival
-		getResults(destination, source, arrdate, db);
+		ResultSet rs_arrival = 	getResults(destination, source, arrdate, db);
 		
 		out.println("<h2>Search Query</h2>");
 		out.println("source: " + source);
@@ -92,7 +98,7 @@ public class FlightSearchQueryServlet extends HttpServlet {
 		disconnectDatabase(db);
 	}
 
-	private void getResults(String source, String destination,
+	private ResultSet getResults(String source, String destination,
 			String[] deptdate, JDBCHelper db) {
 		// TODO Auto-generated method stub
 		ArrayList<Object> param =  new ArrayList<Object>();
@@ -108,7 +114,6 @@ public class FlightSearchQueryServlet extends HttpServlet {
 				+ " AND DAY(departure) = ? "
 				+ " AND MONTH(departure) = ? "
 				+ " AND YEAR(departure) = ? ";
-		
 		ResultSet rs1 = db.queryDB(query_string, param);
 		
 		try {
@@ -121,6 +126,7 @@ public class FlightSearchQueryServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return rs1;
 		
 	}
 
