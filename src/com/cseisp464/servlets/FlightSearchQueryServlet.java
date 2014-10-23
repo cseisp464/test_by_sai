@@ -77,7 +77,7 @@ public class FlightSearchQueryServlet extends HttpServlet {
 		// Query for Arrival
 		ResultSet rs_arrival = 	getResults(destination, source, arrdate, db);
 		
-		out.println("<h2>Search Query</h2>");
+		/*out.println("<h2>Search Query</h2>");
 		out.println("source: " + source);
 		out.println("<br>");
 		out.println("destination: " + destination);
@@ -91,7 +91,7 @@ public class FlightSearchQueryServlet extends HttpServlet {
 		out.println("ticket_class: " + ticket_class);
 		out.println("<br>");
 
-		out.println("</html></body>");
+		out.println("</html></body>");*/
 		
 		// Closing the database connection
 		//db.closeDBConnection();
@@ -118,11 +118,11 @@ public class FlightSearchQueryServlet extends HttpServlet {
 		
 		try {
 			System.out.println(rs1.getStatement());
-			if (rs1 != null){
+			/*if (rs1 != null){
 				while (rs1.next()){
 					System.out.println(rs1.getString("plane") + " " + rs1.getString("operator") + " " + rs1.getString("source") + " " + rs1.getString("destination") + " " + rs1.getTimestamp("departure") + " " + rs1.getTimestamp("arrival"));
 				}
-			}
+			}*/
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

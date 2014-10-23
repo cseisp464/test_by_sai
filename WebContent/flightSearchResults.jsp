@@ -34,16 +34,7 @@
 		<div class="jumbotron">
 			<h2 align="center">Flight Search Results</h2> <br>
 			
-			<% //out.print(request.getAttribute("departure_results"));
-				
-			ResultSet rs1 = (ResultSet) request.getAttribute("departure_results");
-				
-				while (rs1.next()){
-					out.print(rs1.getString("plane") + " " + rs1.getString("operator") + " " + rs1.getString("source") + " " + rs1.getString("destination") + " " + rs1.getTimestamp("departure") + " " + rs1.getTimestamp("arrival"));
-				}
-				
-				
-				%>
+			
 			
 				<table class="table table-striped">
 			        <thead>
@@ -58,7 +49,27 @@
 			            </tr>
 			        </thead>
 			        <tbody>
-			        
+			        	
+			        	<% //out.print(request.getAttribute("departure_results"));
+				
+						ResultSet rs1 = (ResultSet) request.getAttribute("departure_results");
+				
+				while (rs1.next()){ %>
+				<tr>
+				<td> <%=rs1.getString("plane")%> </td> 
+				<td> <%=rs1.getString("operator") %> </td>  
+				<td> <%=rs1.getTimestamp("departure")%> </td> 
+				<td> <%=rs1.getTimestamp("arrival")%> </td>
+				<td> 2 </td>  
+				<td> 300 </td>
+				<td><a href="viewAndBook.jsp" class="btn btn-success">View and Book</a></td>
+				</tr> 
+				
+			<%
+			}			
+			
+			%>
+						
 
 			        </tbody>
 			    </table>
