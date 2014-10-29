@@ -52,7 +52,7 @@ public class Users {
 		param.add(salt);
 		param.add(uname);
 		
-		String query_string = "INSERT INTO USERS values (default, ?, ?, ?, ?, ?, ?)";
+		String query_string = "INSERT INTO users values (default, ?, ?, ?, ?, ?, ?)";
 		
 		connectDB();
 		
@@ -89,7 +89,7 @@ public class Users {
 		// Adding the username to the list
 		param.add(value);
 		// Composing the query to check if the user exists
-		String query_string = "SELECT * FROM USERS" + " WHERE " + column_name + " = ? ";
+		String query_string = "SELECT * FROM users" + " WHERE " + column_name + " = ? ";
 		
 		connectDB();
 		
@@ -112,7 +112,7 @@ public class Users {
 		// Adding the username to the list
 		param.add(username);
 		// Composing the query to check if the user exists
-		String query_string = "SELECT * FROM USERS" +  " WHERE username = ? ";
+		String query_string = "SELECT * FROM users" +  " WHERE username = ? ";
 		
 		connectDB();
 		

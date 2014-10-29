@@ -124,8 +124,8 @@ line-height: 40px;
 							<input 
 								type="text" 
 								class="form-control" 
-								id="source" 
-								name="source"
+								id="account_holder_name" 
+								name="account_holder_name"
 								required> 
 						</div>
 						
@@ -135,8 +135,8 @@ line-height: 40px;
 							<input 
 								type="text" 
 								class="form-control" 
-								id="source" 
-								name="source"
+								id="routing_number" 
+								name="routing_number"
 								required> 
 						</div>
 						
@@ -145,8 +145,8 @@ line-height: 40px;
 							<input 
 								type="text" 
 								class="form-control" 
-								id="source" 
-								name="source"
+								id="account_number" 
+								name="account_number"
 								required> 
 						</div>
 				</table>

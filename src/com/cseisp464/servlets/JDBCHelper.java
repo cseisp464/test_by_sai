@@ -106,6 +106,9 @@ public class JDBCHelper {
 				}else if (a.getClass() == Timestamp.class){
 					ps.setTimestamp(i, (Timestamp)a);
 					//System.out.println(String.format("I'm a DateTime!  %d - %s", i, a.toString()));
+				}else if (a.getClass() == Long.class){
+					ps.setLong(i, (Long)a);
+					//System.out.println(String.format("I'm a DateTime!  %d - %s", i, a.toString()));
 				}
 				i++;
 			}
@@ -148,6 +151,9 @@ public class JDBCHelper {
 					//System.out.println(String.format("I'm a Double!  %d - %f", i, (Double) a));
 				}else if (a.getClass() == Timestamp.class){
 					ps.setTimestamp(i, (Timestamp)a);
+					//System.out.println(String.format("I'm a DateTime!  %d - %s", i, a.toString()));
+				}else if (a.getClass() == Long.class){
+					ps.setLong(i, (Long)a);
 					//System.out.println(String.format("I'm a DateTime!  %d - %s", i, a.toString()));
 				}
 				i++;

@@ -72,6 +72,8 @@ public class FlightSearchResultsServlet extends HttpServlet {
 		// Query for Plane details
 		ResultSet rs_planeDetails = getResults(flight_number, db);
 		
+		db.closeDBConnection();
+		
 		RequestDispatcher rd = request.getRequestDispatcher("viewAndBook.jsp") ;
 		rd.include(request, response);
 		
