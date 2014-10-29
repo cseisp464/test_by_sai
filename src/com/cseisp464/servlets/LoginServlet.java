@@ -12,6 +12,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.catalina.User;
 
 /**
  * Servlet implementation class LoginServlet
@@ -50,6 +53,10 @@ public class LoginServlet extends HttpServlet {
 		String uname = request.getParameter("username");
 		String passwd1 = request.getParameter("password1");
 		String remember_me = request.getParameter("rememberMe");
+		
+		// Session
+		HttpSession session = request.getSession();
+		session.setAttribute("username", uname);
 		
 		// Handling bad form data in order to avoid Null Pointer Exception
 		if(remember_me == null){

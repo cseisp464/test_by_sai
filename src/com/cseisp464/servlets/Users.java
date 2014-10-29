@@ -68,32 +68,6 @@ public class Users {
 		
 	}
 	
-	/*public boolean checkIfUserExists(String username) throws IOException, SQLException{
-		
-		boolean status = false;
-		
-		// List to hold the username 
-		ArrayList<Object> param =  new ArrayList<Object>();
-		// Adding the username to the list
-		param.add(username);
-		// Composing the query to check if the user exists
-		String query_string = "SELECT * FROM USERS" + " WHERE username = ? ";
-		
-		connectDB();
-		
-		ResultSet rs1 = db.queryDB(query_string, param);
-
-		// Checking if record exists
-		if(rs1.next()){
-			status = true;
-		}
-		
-		closeDB();
-		return status;
-		
-	}*/
-	
-	
 	/***
 	 * This function checks if username or email already exists in the USERS table.
 	 * If checking for username then the column_name should be exactly the name of the 'username' column in the USERS table 

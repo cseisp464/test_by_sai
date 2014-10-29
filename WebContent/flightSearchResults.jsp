@@ -1,4 +1,7 @@
+<%@page import="com.cseisp464.servlets.Flights"%>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.text.*" %>
+<%@ page import="java.util.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -17,112 +20,86 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<style>
 
+.sourceFont{
+
+color:Red;
+
+}
+
+.destinationFont{
+color: Green;
+
+}
+</style>
 </head>
 <body>
 
-	<nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Airline Reservation System</a>
-			</div>
-		</div>
-	</nav>
+	<%@ include file="/WEB-INF/header.jsp" %>
 	
 	<div class="container">
 		<div class="jumbotron">
 			<h2 align="center">Flight Search Results</h2> <br>
 			
-			
-			
+			<legend><strong>From: <span class="sourceFont"><%= session.getAttribute("source") %></span> <br/>
+			 				To: <span class="destinationFont"><%= session.getAttribute("destination") %></span></strong>
+			 </legend>
 				<table class="table table-striped">
 			        <thead>
 			            <tr>
-			                <th>Flight No.</th>
-			                <th>Operator</th>
-			                <th>Departure Time</th>
-			                <th>Arrival Time</th>
-			                <th>Number of Stops</th>
-			                <th>Cost</th>
-			                <th>View and Book</th>
+			                <th>Price</th>
+			                <th>Departure</th>
+			                <th>Arrival</th>
+			                <th>Stops</th>
+			                <th>Duration</th>
+			                <th>Airline</th>
 			            </tr>
 			        </thead>
 			        <tbody>
 			        	
-			        	<% //out.print(request.getAttribute("departure_results"));
-				
-						ResultSet rs1 = (ResultSet) request.getAttribute("departure_results");
-				
-				while (rs1.next()){ %>
-				<tr>
-				<td> <%=rs1.getString("plane")%> </td> 
-				<td> <%=rs1.getString("operator") %> </td>  
-				<td> <%=rs1.getTimestamp("departure")%> </td> 
-				<td> <%=rs1.getTimestamp("arrival")%> </td>
-				<td> 2 </td>  
-				<td> 300 </td>
-				<td><a href="viewAndBook.jsp" class="btn btn-success">View and Book</a></td>
-				</tr> 
-				
-			<%
-			}			
+						<%
+						List<Flights> l =(ArrayList<Flights>) session.getAttribute("flightsBean");
 			
-			%>
+						for(int i=0;i<l.size();i++){ %>
+						<tr>
+						<%
+						String flight_number = l.get(i).getFlight_number();
+						String plane_number = l.get(i).getPlane_number();
+						long diff = l.get(i).getArrival_time() - l.get(i).getDeparture_time() ;
+						long diffSeconds = diff / 1000 % 60;
+						long diffMinutes = diff / (60 * 1000) % 60;
+						long diffHours = diff / (60 * 60 * 1000) % 24;
+						long diffDays = diff / (24 * 60 * 60 * 1000);
+						String duration = diffHours + "hr " + diffMinutes + "min " ;					
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd, hh:mm a");
+						String dept_time = sdf.format(new java.util.Date(l.get(i).getDeparture_time()));
+						String arvl_time = sdf.format(new java.util.Date(l.get(i).getArrival_time()));
+						%>
+						<% int stops = 0; %>
+						<td>$<% int cost =  (int) (100 + Math.random() * 800); %> <%=cost %> <br/> 
+							<form action="FlightSearchResultsServlet" method="post">
+								<input type="hidden" name="flight_number" value="<%=flight_number%>" />
+								<input type="hidden" name="plane_number" value="<%=plane_number%>" />
+								<input type="hidden" name="stops" value="<%=stops%>" />
+								<input type="hidden" name="cost" value="<%=cost%>" />
+								<input type="hidden" name="deptTime" value="<%=dept_time%>" />
+								<input type="hidden" name="arrTime" value="<%=arvl_time%>" />
+								<input type="hidden" name="duration" value="<%=duration%>" />
+								<button type="submit" class="btn btn-success">View and Book</button>
+							</form></td>
+						<td><%= dept_time %></td>
+						<td><%= arvl_time %></td>
+						<td> <%=stops %></td>
+						<td> <%=duration %></td>
+						<td><%=l.get(i).getOperator_name() %></td>
+						</tr>
+						
+						<%} %>
 						
 
 			        </tbody>
 			    </table>
-
-
-			    <!--  
-			    <table class="table table-striped">
-			        <thead>
-			            <tr>
-			                <th>Flight No.</th>
-			                <th>Flight Date</th>
-			                <th>Departure Time</th>
-			                <th>Arrival Time</th>
-			                <th>Number of Stops</th>
-			                <th>Cost</th>
-			                <th>View and Book</th>
-			            </tr>
-			        </thead>
-			        <tbody>
-			            <tr>
-			                <td>1</td>
-			                <td>09/21/2014</td>
-			                <td>13:50</td>
-			                <td>03:30</td>
-			                <td>5</td>
-			                <td>$500</td>
-			                <td><a href="viewAndBook.jsp" class="btn btn-success">View and Book</a></td>
-			            </tr>
-			            <tr>
-			                <td>2</td>
-			                <td>09/22/2014</td>
-			                <td>04:30</td>
-			                <td>06:30</td>
-			                <td>0</td>
-			                <td>$1000</td>
-			                <td><a href="viewAndBook.jsp" class="btn btn-success">View and Book</a></td>
-			            </tr>
-			            <tr>
-			                <td>3</td>
-			                <td>09/22/2014</td>
-			                <td>19:30</td>
-			                <td>23:30</td>
-			                <td>2</td>
-			                <td>$1500</td>
-			                <td><a href="viewAndBook.jsp" class="btn btn-success">View and Book</a></td>
-			            </tr>
-			        </tbody>
-			    </table>
-			    
-			     -->
-			    
-			    <a href="login.jsp" class="btn btn-default pull-right">Logout</a>
-
 		</div>
 	</div>
 
