@@ -38,6 +38,14 @@ color: Green;
 
 	<%@ include file="/WEB-INF/header.jsp" %>
 	
+	<%
+	// checking if session exists, if not then redirect to login page
+		if(session.getAttribute("username") == null){
+			response.sendRedirect("login.jsp");
+		}
+	
+	%>
+	
 	<div class="container">
 		<div class="jumbotron">
 			<h2 align="center">Flight Search Results</h2> <br>

@@ -37,17 +37,39 @@ line-height: 40px;
 }
 </style>
 
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	$('#submit').click(function(event){
+		if($('#routing_number').val().length!=9){
+			alert("Routing number should be of 9-digts");
+			event.preventDefault();
+		}
+		
+		if($('#account_number').val().length!=10){
+			alert("Routing number should be of 10-digts");
+			event.preventDefault();
+		}	
+	});
+	
+	
+	
+});
+
+
+</script>
+
 </head>
 <body>
+<%@ include file="/WEB-INF/header.jsp" %>
+<%
+	// checking if session exists, if not then redirect to login page
+		if(session.getAttribute("username") == null){
+			response.sendRedirect("login.jsp");
+		}
+	
+	%>
 
-	<nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Airline Reservation System</a>
-			</div>
-		</div>
-	</nav>
 
 	<div class="container">
 		<div class="jumbotron">
@@ -151,7 +173,7 @@ line-height: 40px;
 						</div>
 				</table>
 				
-				<button type="submit"  class="btn btn-primary">Confirm Transaction</button>
+				<button type="submit" id="submit" class="btn btn-primary">Confirm Transaction</button>
 						&nbsp;&nbsp;
 						<a href="flightSearchQuery.jsp" class="btn btn-success">Cancel</a>
 						&nbsp;&nbsp;

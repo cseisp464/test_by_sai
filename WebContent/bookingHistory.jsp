@@ -30,15 +30,14 @@ $(document).ready(function(){
 
 </head>
 <body>
-
-	<nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Airline Reservation System</a>
-			</div>
-		</div>
-	</nav>
+<%@ include file="/WEB-INF/header.jsp" %>
+<%
+	// checking if session exists, if not then redirect to login page
+		if(session.getAttribute("username") == null){
+			response.sendRedirect("login.jsp");
+		}
+	
+	%>
 	
 	<div class="container">
 		<div class="jumbotron">

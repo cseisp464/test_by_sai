@@ -29,7 +29,7 @@ $(document).ready(function(){
                         <li><a href="signup.jsp">Register</a></li>
                         <li><a href="bookingHistory.jsp">Booking History</a></li>
                         <li class="divider"></li>
-                        <li><a href="login.jsp">Logout</a></li>
+                        <li><a href="LogoutServlet">Logout</a></li>
                     </ul>
                 </li>
             </ul>
