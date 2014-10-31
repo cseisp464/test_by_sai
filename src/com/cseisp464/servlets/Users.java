@@ -129,6 +129,8 @@ public class Users {
 		
 		String calculated_hash = computeHash(entered_password, stored_salt);
 		
+		closeDB();
+		
 		if(stored_password.equals(calculated_hash)){
 			return true;
 		}else{

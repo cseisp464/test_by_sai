@@ -139,7 +139,8 @@ public class FlightSearchQueryServlet extends HttpServlet {
 						
 					}
 
-					flight.setFlight_number(rs1.getString("plane"));
+					//flight.setFlight_number(rs1.getString("plane"));
+					flight.setFlight_number(rs1.getString("id"));
 					
 					operator_name = rs1.getString("operator");
 					switch (operator_name) {
@@ -179,12 +180,19 @@ public class FlightSearchQueryServlet extends HttpServlet {
 					flight.setArrival_time(rs1.getTimestamp("arrival").getTime());
 					
 					flights_list.add(flight);
-					
+					System.out.println("Start Printing values");
 					System.out.println(rs1.getString("plane") + " " + rs1.getString("operator") + " " + rs1.getString("source") + " " + rs1.getString("destination") + " " + rs1.getTimestamp("departure") + " " + rs1.getTimestamp("arrival"));
+					System.out.println("End Printing values");
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		
+		
+		// if the value of list is 0, then redirect to a no results page
+		if(flights_list.size() == 0){
+			response.sendRedirect("noFlightSearchResults.jsp");
 		}
 		
 		session.setAttribute("flightsBean", flights_list);

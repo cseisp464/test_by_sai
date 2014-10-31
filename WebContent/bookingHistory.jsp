@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="com.cseisp464.servlets.Bookings"%>
+<%@ page import="java.sql.*" %>
+<%@ page import="java.text.*" %>
+<%@ page import="java.util.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -30,64 +34,74 @@ $(document).ready(function(){
 
 </head>
 <body>
+<%@ page errorPage="/WEB-INF/noValuesInlistError.jsp" %>
 <%@ include file="/WEB-INF/header.jsp" %>
 <%
 	// checking if session exists, if not then redirect to login page
-		if(session.getAttribute("username") == null){
-			response.sendRedirect("login.jsp");
-		}
+	if(session.getAttribute("username") == null){
+		response.sendRedirect("login.jsp");
+	}
 	
-	%>
+%>
 	
 	<div class="container">
 		<div class="jumbotron">
+			<div class ="row">
+					<div class="col-md-12">
 			<h2 align="center">Booking History</h2> <br>
+			<table class="table table-striped">
+			        <thead>
+			            <tr>
+			            	<th>S.No</th>
+			                <th>Booking #</th>
+			                <th>Date of Booking</th>
+			                <!-- <th>Flight #</th> -->
+			                <th>Operator</th>
+			                <th>Source</th>
+			                <th>Destination</th>
+			                <th>Departure</th>
+			                <th>Arrival</th>
+			                <th>Number of Seats</th>
+			                <th>Total Cost</th>
+			            </tr>
+			        </thead>
+			        <tbody>
 			
-			<form action="flightSearchResults.jsp" method="post" class="form-horizontal">
-				<div class ="row">
-					<div class="col-md-6 col-md-offset-3">
-					
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>Flight No.</th>
-								<th>Ticket No.</th>
-								<th>Date</th>
-							</tr>
-						</thead>
+					<%
+						List<Bookings> l =(ArrayList<Bookings>) session.getAttribute("booking_list");
 						
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td>27</td>
-								<td>9/1/2014</td>
-							</tr>
-							
-							<tr>
-								<td>2</td>
-								<td>36</td>
-								<td>9/14/2014</td>
-							</tr>
-							
-							<tr>
-								<td>3</td>
-								<td>16</td>
-								<td>10/14/2014</td>
-							</tr>
-						</tbody>
-					</table>
-										
-					<a href="flightSearchQuery.jsp" class="btn btn-success">Home</a>
-					
-					<a href="login.jsp" class="btn btn-default pull-right">Logout</a>
-
-       </div>
-				</div>
-			</form>
+						for(int i=0;i<l.size();i++){ 
+						
+					%>
 			
-			<br>
+			
+					<tr>
+						<td><%= i+1 %></td>
+						<td><%= l.get(i).getBooking_id() %></td>
+						<td><%= l.get(i).getDate_of_booking() %></td>
+						<!-- <td> <%=l.get(i).getFlight_id() %></td>  -->
+						<td> <%= l.get(i).getOperator() %></td>
+						<td><%= l.get(i).getSource() %></td>
+						<td><%=l.get(i).getDestination() %></td>
+						<td><%=l.get(i).getDeparture_time() %></td>
+						<td><%=l.get(i).getArrival_time() %></td>
+						<td><%=l.get(i).getNumber_of_seats() %></td>
+						<td>$<%=l.get(i).getTotal_cost() %></td>
+					</tr>
+					<%
+					
+						} 
+					
+					%>
+			 	</tbody>
+			</table>
+			
+								       
+					       <center><a href="flightSearchQuery.jsp" class="btn btn-warning">Home</a></center>
 		</div>
 	</div>
+	</div>
+</div>
 
 </body>
 </html>

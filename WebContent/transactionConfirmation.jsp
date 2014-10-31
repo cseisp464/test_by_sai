@@ -37,7 +37,7 @@ line-height: 40px;
 <body>
 
 <%@ include file="/WEB-INF/header.jsp" %>
-
+<%@ page errorPage="/WEB-INF/transactionErrors.jsp" %>
 <%
 	// checking if session exists, if not then redirect to login page
 		if(session.getAttribute("username") == null){
@@ -165,8 +165,7 @@ line-height: 40px;
 								</div>
 						</div>
 
-						<a href="flightSearchQuery.jsp" class="btn btn-warning">Home</a>
-					    <button type="submit" class="btn btn-default pull-right">Print</a>
+					    <center><button type="submit" class="btn btn-default">Print</a></center>
 
 			
 			</form>

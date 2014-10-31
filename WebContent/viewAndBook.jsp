@@ -61,7 +61,7 @@ color: Green;
 							<table class="table table-striped">
 						        <tbody>
 						            <tr>
-						            	<th>Flight No./Plane No.</th>
+						            	<th>Flight # / Plane No.</th>
 						                <td><%= session.getAttribute("flight_number") %> / <%= session.getAttribute("plane_number") %></td>
 						                <input type="hidden" name="plane_number" value="<%= session.getAttribute("plane_number")%>" />
 						            </tr>
@@ -95,6 +95,16 @@ color: Green;
 						                <td>$<%= session.getAttribute("cost") %></td>
 						            </tr>
 						        </tbody>
+						        
+						        <tbody>
+						            <tr>
+						            	<th>Ticket Class</th>
+						                <td><%= session.getAttribute("ticket_class") %></td>
+						            </tr>
+						        </tbody>
+						        
+						        
+						        
 						        
 						        <tbody>
 						            <tr>
@@ -151,7 +161,7 @@ color: Green;
 						&nbsp;&nbsp;
 						<a href="flightSearchQuery.jsp" class="btn btn-warning">Home</a>
 						
-						<a href="login.jsp" class="btn btn-info pull-right">Add More Flights</a>
+						<a href="underConstruction.jsp" class="btn btn-info pull-right">Add More Flights</a>
 
 					</div>
 				</div>

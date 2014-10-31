@@ -16,10 +16,23 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	window.print();
+	
+});
+
+
+</script>
+
 <title>Print Page</title>
+
 </head>
 <body>
-
+<%@ page errorPage="/WEB-INF/noValuesInlistError.jsp" %>
 <%@ include file="/WEB-INF/header.jsp" %>
 
 
@@ -44,17 +57,39 @@
 					       
 					       <tbody>
 					       	<tr>
-					       		<td></td>
+					       		<th>Name</th>
+					       		<td><%= session.getAttribute("name") %></td>
 					       	</tr>
 					       </tbody>
 					       
 					       <tbody>
 					       	<tr>
-					       		<th>Flight No.</th>
-					       		<td><%= session.getAttribute("flight_number") %></td>
+					       		<th>Age</th>
+					       		<td><%= session.getAttribute("age") %></td>
 					       	</tr>
-					       
 					       </tbody>
+					       
+					       <tbody>
+					       	<tr>
+					       		<th>Gender</th>
+					       		<td><%= session.getAttribute("gender") %></td>
+					       	</tr>
+					       </tbody>
+					       
+					       <tbody>
+					       	<tr>
+					       		<th>Source</th>
+					       		<td><%= session.getAttribute("source") %></td>
+					       	</tr>
+					       </tbody>
+					       
+					       <tbody>
+					       	<tr>
+					       		<th>Destination</th>
+					       		<td><%= session.getAttribute("destination") %></td>
+					       	</tr>
+					       </tbody>
+
 					       <tbody>	
 					       	<tr>
 					       		<th>Plane No.</th>
@@ -91,25 +126,23 @@
 					       		<td><%= session.getAttribute("confirmed_number_of_seats") %></td>
 					       	</tr>
 					       	</tbody>
+					       	
+					       	 <tbody>
+						            <tr>
+						            	<th>Ticket Class</th>
+						                <td><%= session.getAttribute("ticket_class") %></td>
+						            </tr>
+						        </tbody>
+						        
 					       <tbody>
 					       	<tr>
 					       		<th>Total Cost</th>
 					       		<td>$<%= session.getAttribute("total_cost") %></td>
 					       	</tr>
 					       	</tbody>
-					       
-					       
-					       <tbody>
-					       	<tr>
-					       		<td></td>
-					       	</tr>
-					       </tbody>
-					       
-					       
 
 					   </table>
-					       
-					       
+
 					   </div>
 				</div>
 		

@@ -58,8 +58,9 @@ public class TransactionConfirmationServlet extends HttpServlet {
 		double ticket_cost = (Integer)session.getAttribute("total_cost");
 		int confirmed_number_of_seats = (Integer)session.getAttribute("confirmed_number_of_seats");
 		String username = (String)session.getAttribute("username");
-		int flight_number = Integer.parseInt((String)session.getAttribute("flight_number"));
+		int flight_id = Integer.parseInt((String)session.getAttribute("flight_number"));
 		int plane_number = Integer.parseInt((String)session.getAttribute("plane_number"));
+		int booking_id;
 		
 		System.out.println("Ticket cost: "+ ticket_cost);
 		
@@ -83,11 +84,14 @@ public class TransactionConfirmationServlet extends HttpServlet {
 				// and update the balance in the accounts table
 				if(success_flag){
 					error_message = null;
+					
 					// Addding Booking Details
 					Bookings b = new Bookings(); 
-					b.addingBookingDetails(flight_number, confirmed_number_of_seats, acc_number, username, ticket_cost);
+					booking_id = b.addingBookingDetails(confirmed_number_of_seats, acc_number, username, ticket_cost);
+					b.addEntriesInBookingFlightsTable(booking_id, flight_id);
 					
 					System.out.println("old balance: "+ t.getBalance());
+					
 					//updating the balance in the accounts
 					new_balance = t.getBalance() - ticket_cost;
 					System.out.println("Updated Balance = " + new_balance);

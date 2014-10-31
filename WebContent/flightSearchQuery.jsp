@@ -31,25 +31,43 @@ $(document).ready(function(){
 	                     "ATL-Hartsfield-Jackson Atlanta International Airport,GA,US",
 	                     "ANC-Ted Stevens Anchorage International Airport,AK,US",
 	                     "AUS-Austin-Bergstrom International Airport,TX,US",
-	                     "BWI",
-	                     "BOS",
-	                     "CLT",
-	                     "MDW",
+	                     "BWI-Baltimore Washington International Airport,MD,US",
+	                     "BOS-Logan International Airport,MA,US",
+	                     "CLT-Charlotte Douglas International Airport,NC,US",
+	                     "MDW-Chicago Midway International Airport,IL,US",
 	                     "ORD-Chicago O'Hare International Airport,IL,US",
-	                     "CVG",
-	                     "CLE",
-	                     "CMH",
-	                     "DFW",
-	                     "DEN",
-	                     "DTW",
-	                     "FLL",
-	                     "RSW",
-	                     "BDL",
-	                     "HNL",
-	                     "IAH",
-	                     "HOU",
-	                     "IND",
-	                     "MCI",
+	                     "CVG-Cincinnati/Northern Kentucky International Airport,KY,US",
+	                     "CLE-Cleveland Hopkins International Airport,OH,US",
+	                     "CMH-Port Columbus International Airport,OH,US",
+	                     "DFW-Dallas/Fort Worth International Airport,TX,US",
+	                     "DEN-Denver International Airport,CO,US",
+	                     "DTW-Detroit Metro Wayne County Airport,MI,US",
+	                     "FLL-Fort Lauderdale - Hollywood International Airport,FL,US",
+	                     "RSW-SW Florida International Airport,FL,US",
+	                     "BDL-Bradley International Airport,CT,US",
+	                     "HNL-Honolulu International Airport,HI,US",
+	                     "IAH-George Bush Intercontinental Airport,TX,US",
+	                     "HOU-William P Hobby Airport,TX,US",
+	                     "IND-Indianapolis International Airport,IN,US",
+	                     "MCI-Kansas City International Airport,MO,US",
+	                     "MCO-Orlando International Airport,FL,US",
+	                     "PHL-Philadelphia International Airport,PA,US",
+	                     "PHX-Phoenix Sky Harbor International Airport,AZ,US", 
+	                     "PIT-Pittsburgh International Airport,PA,US", 
+	                     "PDX-Portland International Airport,OR,US", 
+	                     "RDU-Raleigh-Durham International Airport,NC,US", 
+	                     "SMF-Sacramento International Airport,CA,US", 
+	                     "SLC-Salt Lake City International Airport,UT,US", 
+	                     "SAT-San Antonio International Airport,TX,US", 
+	                     "SAN-San Diego International Airport,CA,US", 
+	                     "SFO-San Francisco International Airport,CA,US", 
+	                     "SJC-San Jose International Airport,CA,US", 
+	         			 "SNA-John Wayne Airport,CA,US", 
+	         			 "SEA-Seattle-Tacoma International Airport,WA,US", 
+	         			 "STL-Lambert-St. Louis International Airport,MO,US", 
+	         			 "TPA-Tampa International Airport,FL,US", 
+	         			 "IAD-Washington Dulles International Airport,VA,US", 
+	         			 "DCA-Ronald Reagan Washington National Airport,VA,US"
 	                   ];
 	
 	//airport iata codes
@@ -211,7 +229,7 @@ $(document).ready(function(){
 							</div>
 						</div>
 						
-						<button type="submit" id="search" class="btn btn-primary">Search</button>					
+						<button type="submit" id="search" class="btn btn-primary">Search</button>
 						
 						<!-- <a href="bookingHistory.jsp" class="btn btn-success">View my Booking History</a>
 						

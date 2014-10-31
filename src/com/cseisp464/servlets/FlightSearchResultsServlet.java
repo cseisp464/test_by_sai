@@ -70,7 +70,8 @@ public class FlightSearchResultsServlet extends HttpServlet {
 		session.setAttribute("deptTime", deptTime);
 		session.setAttribute("arrTime", arrTime);
 		
-		// Testing Database Connection using the JDBC Helper class
+		/*
+		 
 		JDBCHelper db = new JDBCHelper("cse.unl.edu", "cse464", "spalusa", "Test@464");
 		
 		// Query for Plane details
@@ -78,16 +79,15 @@ public class FlightSearchResultsServlet extends HttpServlet {
 		
 		db.closeDBConnection();
 		
+		*/
+		
 		RequestDispatcher rd = request.getRequestDispatcher("viewAndBook.jsp") ;
 		rd.include(request, response);
-		
-		//out.println("Plane : " + planeId);
-		//out.println("<br>");
 
 		out.println("</html></body>");
 	}
 	
-	private ResultSet getResults(String planeId, JDBCHelper db) {
+	/*private ResultSet getResults(String planeId, JDBCHelper db) {
 		// TODO Auto-generated method stub
 		ArrayList<Object> param =  new ArrayList<Object>();
 		param.add(planeId);
@@ -109,5 +109,6 @@ public class FlightSearchResultsServlet extends HttpServlet {
 		return rs1;
 		
 	}
+	*/
 
 }

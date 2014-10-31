@@ -3,6 +3,7 @@ package com.cseisp464.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,9 +52,16 @@ public class PrintingServlet extends HttpServlet {
 		String ln = request.getParameter("lastname");
 		String age = request.getParameter("age");
 		String gender = request.getParameter("gender");
+		String name = fn +" " + ln;
+		
 		
 		// get session data for print
 		HttpSession session = request.getSession();
+		session.setAttribute("name", name);
+		session.setAttribute("age", age);
+		session.setAttribute("gender", gender);
+		
+		/*
 		out.print("<strong>Name:</strong>");
 		out.print(fn);
 		out.print(ln);
@@ -95,7 +103,10 @@ public class PrintingServlet extends HttpServlet {
 		out.println("$"+session.getAttribute("total_cost"));
 		out.print("<br><br>");
 		
-		out.println("</center></html></body>");
+		out.println("</center></html></body>");*/
+		
+		RequestDispatcher rd = request.getRequestDispatcher("printResults.jsp") ;
+		rd.include(request, response);
 	}
 
 }

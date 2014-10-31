@@ -47,7 +47,7 @@ $(document).ready(function(){
 		}
 		
 		if($('#account_number').val().length!=10){
-			alert("Routing number should be of 10-digts");
+			alert("Account number should be of 10-digts");
 			event.preventDefault();
 		}	
 	});
@@ -61,6 +61,7 @@ $(document).ready(function(){
 
 </head>
 <body>
+<%@ page errorPage="/WEB-INF/transactionErrors.jsp" %>
 <%@ include file="/WEB-INF/header.jsp" %>
 <%
 	// checking if session exists, if not then redirect to login page
@@ -87,8 +88,8 @@ $(document).ready(function(){
 						<table class="table table-striped">
 					        <tbody>
 					            <tr>
-					            	<th>Flight No./ Plane No.</th>
-					                <td><%= session.getAttribute("flight_number") %> / <%= session.getAttribute("plane_number") %></td>
+					            	<th>Plane No.</th>
+					                <td><%= session.getAttribute("plane_number") %></td>
 					            </tr>
 					        </tbody>
 					        
@@ -133,6 +134,13 @@ $(document).ready(function(){
 					                <td><%= session.getAttribute("confirmed_number_of_seats") %> </td>
 								</tr>					        
 					        </tbody>
+					        
+					         <tbody>
+						            <tr>
+						            	<th>Ticket Class</th>
+						                <td><%= session.getAttribute("ticket_class") %></td>
+						            </tr>
+						        </tbody>
 					        
 					       <tbody>
 					       		<tr>
