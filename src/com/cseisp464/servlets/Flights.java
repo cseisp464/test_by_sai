@@ -12,7 +12,14 @@ public class Flights {
 	private int firstclass_available;
 	private int businessclass_available;
 	private int economy_available;
+	private int flight_ticketPrice;
 	
+	public int getFlight_ticketPrice() {
+		return flight_ticketPrice;
+	}
+	public void setFlight_ticketPrice(int flight_ticketPrice) {
+		this.flight_ticketPrice = flight_ticketPrice;
+	}
 	public String getPlane_number() {
 		return plane_number;
 	}

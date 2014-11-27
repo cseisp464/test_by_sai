@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -178,6 +179,10 @@ public class FlightSearchQueryServlet extends HttpServlet {
 					flight.setDestination(rs1.getString("destination"));
 					flight.setDeparture_time(rs1.getTimestamp("departure").getTime());
 					flight.setArrival_time(rs1.getTimestamp("arrival").getTime());
+					
+					// setting flight ticket price
+					int cost =  (int) (100 + Math.random() * 800);
+					flight.setFlight_ticketPrice(cost);
 					
 					flights_list.add(flight);
 					System.out.println("Start Printing values");
