@@ -59,6 +59,7 @@ public class FlightSearchResultsServlet extends HttpServlet {
 		String duration = request.getParameter("duration");
 		String deptTime = request.getParameter("deptTime");
 		String arrTime = request.getParameter("arrTime");
+		String operator = request.getParameter("operator");
 		
 		// Session
 		HttpSession session = request.getSession();
@@ -69,6 +70,7 @@ public class FlightSearchResultsServlet extends HttpServlet {
 		session.setAttribute("duration", duration);
 		session.setAttribute("deptTime", deptTime);
 		session.setAttribute("arrTime", arrTime);
+		session.setAttribute("operator", operator);
 		
 		/*
 		 

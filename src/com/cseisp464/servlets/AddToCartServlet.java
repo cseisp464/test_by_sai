@@ -48,6 +48,15 @@ public class AddToCartServlet extends HttpServlet {
 		
 		// Retrieving Data from the Ajax Post Call
 		String plane_number = request.getParameter("plane_number");
+		String flight_number = request.getParameter("flight_number");
+		String ticket_class = request.getParameter("ticket_class");
+		String source = request.getParameter("source");
+		String destination = request.getParameter("destination");
+		String deptTime = request.getParameter("deptTime");
+		String arrTime = request.getParameter("arrTime");
+		String operator = request.getParameter("operator");
+		String duration = request.getParameter("duration");
+		
 		int number_of_seats_requested = Integer.parseInt(request.getParameter("number_of_seats"));
 		
 		// Session
@@ -55,9 +64,7 @@ public class AddToCartServlet extends HttpServlet {
 		
 		int cost_per_ticket = Integer.parseInt((String)session.getAttribute("cost"));
 		int total_cost = 0;
-		
-		// Get the ticket class from the stored session attributes
-		String ticket_class = (String)session.getAttribute("ticket_class");
+
 		// Verify the number of seats by getting the flights bean from the session
 		List<Flights> l =(ArrayList<Flights>) session.getAttribute("flightsBean");
 		
@@ -106,9 +113,16 @@ public class AddToCartServlet extends HttpServlet {
 		
 		ShoppingCart sc = new ShoppingCart();
 		sc.setFlight_class(ticket_class);
-		sc.setFlight_id(plane_number);
+		sc.setFlight_id(flight_number);
+		sc.setPlane_number(plane_number);
 		sc.setNumberOfTickets(number_of_seats_requested);
 		sc.setTotal_cost(total_cost);
+		sc.setDeparture_time(deptTime);
+		sc.setArrival_time(arrTime);
+		sc.setSource(source);
+		sc.setDestination(destination);
+		sc.setOperator(operator);
+		sc.setDuration(duration);
 		
 		if(session.getAttribute("cart")==null) {
 			List<ShoppingCart> cart= new ArrayList();

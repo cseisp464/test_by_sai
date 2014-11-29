@@ -237,7 +237,7 @@ public class Bookings {
 				+ " FROM spalusa.booking_flights as bf "
 				+ " JOIN cse464.flights as f "
 				+ " ON bf.flight_id = f.id) as y "
-				+ " ON x.booking_id = y.booking_id ";
+				+ " ON x.booking_id = y.booking_id  ORDER BY x.date_of_booking DESC";
 		
 		connectDB();
 		ResultSet rs1 = db.queryDB(query_string, param);

@@ -97,6 +97,7 @@ color: Green;
 								<input type="hidden" name="deptTime" value="<%=dept_time%>" />
 								<input type="hidden" name="arrTime" value="<%=arvl_time%>" />
 								<input type="hidden" name="duration" value="<%=duration%>" />
+								<input type="hidden" name="operator" value="<%=l.get(i).getOperator_name()%>" />
 								<button type="submit" class="btn btn-success">View and Book</button>
 							</form></td>
 						<td><%= dept_time %></td>

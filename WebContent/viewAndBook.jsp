@@ -23,30 +23,48 @@
 $(document).ready(function() {
     //var numberOfTickets = $("#number_of_seats").val();
 	    
-    
+     $("#AddedShoppingCart").hide();
+     $("#NotAdded").hide();
     $("#add_to_cart").click(function() {
-    	alert("In ad to cart");
+    	//alert("In ad to cart");
     	
     	var number_of_seats = $("#number_of_seats").val();
         var plane_number= $("#plane_number").val();
+        var flight_number= $("#flight_number").val();
         var ticket_class =  $("#ticket_class").val();
+        var source =  $("#source").val();
+        var destination =  $("#destination").val();
+        var deptTime =  $("#deptTime").val();
+        var arrTime =  $("#arrTime").val();
+        var operator = $("#operator").val();
+        var duration = $("#duration").val();
                
         //console.log(numberOfTickets);
         $.post("AddToCartServlet", 
         {
         	plane_number: plane_number,
+        	flight_number: flight_number,
             ticket_class: ticket_class,
-            number_of_seats: number_of_seats
-            
+            number_of_seats: number_of_seats,
+            source:source,
+            destination:destination,
+            deptTime:deptTime,
+            arrTime:arrTime,
+            operator:operator,
+            duration:duration,            
         }, function(data,status) {
             console.log(data);
-            alert("Data: " + data + "\nStatus: " + status);
+            //alert("Data: " + data + "\nStatus: " + status);
             if (data =="Flight successfully added to cart") {
                 console.log(data);
-                $("#AddedShoppingCart").toggleClass("inactive");
+                $("#AddedShoppingCart").slideDown(500)
+                .delay(5000)
+                .slideUp(500);
             } else {
                 console.log(data);
-                $("#NotAdded").toggleClass("inactive");
+                $("#NotAdded").slideDown(500)
+                .delay(5000)
+                .slideUp(500);
             }
         });
     });
@@ -119,21 +137,30 @@ color: Green;
 	<div class="container">
 		<div class="jumbotron">
 			<h2 align="center">View and Book your Flight</h2> <br>
-			
+					<div id ="AddedShoppingCart">
+  						<h3 align="center" class="destinationFont">Flight Successfully added to shopping cart !</h3>
+        			</div>
+        
+			        <div id="NotAdded">
+			  			<h3 align="center"  class="sourceFont">Error! Not Added to shopping cart. Please try again</h3>
+			  		</div>      
+						
+					<br/>
 			<!-- <form action="ViewAndBookServlet" method="post" class="form-horizontal"> -->
 				<div class ="row">
 					<div class="col-md-6 col-md-offset-3">
 						<legend><strong>Flight Details</strong></legend>
 						
-						<strong> From: <span class="sourceFont"><%= session.getAttribute("source") %></span><br/>
-						To: <span class="destinationFont"> <%= session.getAttribute("destination") %> </span></strong>
-						
+						<strong> From: <span class="sourceFont"><%= session.getAttribute("source") %></span><br/><input type="hidden" name="source" id="source" value="<%= session.getAttribute("source")%>" />
+						To: <span class="destinationFont"> <%= session.getAttribute("destination") %> </span></strong><input type="hidden" name="destination" id="destination" value="<%= session.getAttribute("destination")%>" />
+						<input type="hidden" name="operator" id="operator" value="<%= session.getAttribute("operator")%>" />
 						
 							<table class="table table-striped">
 						        <tbody>
 						            <tr>
 						            	<th>Flight # / Plane No.</th>
 						                <td><%= session.getAttribute("flight_number") %> / <%= session.getAttribute("plane_number") %></td>
+						                <input type="hidden" name="flight_number" id="flight_number" value="<%= session.getAttribute("flight_number")%>" />
 						                <input type="hidden" name="plane_number" id="plane_number" value="<%= session.getAttribute("plane_number")%>" />
 						            </tr>
 						        </tbody>
@@ -142,6 +169,7 @@ color: Green;
 						            <tr>
 						            	<th>Departure Time</th>
 						                <td><%= session.getAttribute("deptTime") %> </td>
+						                <input type="hidden" name="deptTime" id="deptTime" value="<%= session.getAttribute("deptTime")%>" />
 						            </tr>
 						        </tbody>
 						        
@@ -149,6 +177,7 @@ color: Green;
 						            <tr>
 						            	<th>Arrival Time</th>
 						                <td><%= session.getAttribute("arrTime") %></td>
+						                <input type="hidden" name="arrTime" id="arrTime" value="<%= session.getAttribute("arrTime")%>" />
 						            </tr>
 						        </tbody>
 						        
@@ -189,6 +218,7 @@ color: Green;
 						            <tr>
 						            	<th>Total Duration</th>
 						                <td><%= session.getAttribute("duration") %> </td>
+						                <input type="hidden" name="duration" id="duration" value="<%= session.getAttribute("duration")%>" />
 						            </tr>
 						        </tbody>
 						        
@@ -211,7 +241,7 @@ color: Green;
 						&nbsp;&nbsp;
 						<a href="flightSearchQuery.jsp" class="btn btn-warning">Home</a>
 						
-						<a href="underConstruction.jsp" class="btn btn-info pull-right">Checkout</a>
+						<a href="shoppingCart.jsp" class="btn btn-info pull-right">Shopping Cart</a>
 
 					</div>
 				</div>
@@ -221,22 +251,8 @@ color: Green;
 		</div>
 		
 		<br /> <br /> <br />
-		<div class="inactive" id ="AddedShoppingCart">
-		<div class="row">
-       		<div class="jumbotron">
-  			<h3>Flight Successfully added to shopping cart !</h3>
-  			
-  			</div>      
-        </div> 
-        </div>
-        
-        <div class="inactive" id="NotAdded">
-        <div class="row " >
-       		<div class="jumbotron">
-  			<h3>Error! No Added to shopping cart. Please try again</h3>
-  			</div>      
-        </div> 
-        </div>		
+
+	
 
 	</div>
 
