@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -56,6 +57,25 @@ if(cookies != null){
 
 </head>
 <body>
+	<c:url value="/LoginServlet" var="LoginServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/signup.jsp" var="signupURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/BookingHistoryServlet" var="BookingHistoryServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/LogoutServlet" var="LogoutServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>   
+	
+	<c:url value="/flightSearchQuery.jsp" var="flightSearchQueryURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url> 
 
 	<nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -71,7 +91,7 @@ if(cookies != null){
 			<h2 align="center">Welcome to the Online Air Ticket Reservation System!</h2> <br>
 			
 			<!-- Login Form -->
-			<form action="LoginServlet" method="post" class="form-horizontal">
+			<form action="${LoginServletURL}" method="post" class="form-horizontal">
 				<div class ="row">
 					<div class="col-md-6 col-md-offset-3">
 						<legend><strong>Login</strong></legend>

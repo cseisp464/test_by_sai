@@ -57,9 +57,12 @@ public class LoginServlet extends HttpServlet {
 		String uname = request.getParameter("username");
 		String passwd1 = request.getParameter("password1");
 		String remember_me = request.getParameter("rememberMe");
+		Users u = null;
+		Organizations o=null;
 		
 		// Session
 		HttpSession session = request.getSession();
+		session.setMaxInactiveInterval(900);
 		session.setAttribute("username", uname);
 		
 		// Handling bad form data in order to avoid Null Pointer Exception
@@ -71,6 +74,20 @@ public class LoginServlet extends HttpServlet {
 		
 		// Creating an instance of the user class with project's root path as the parameter to the constructor
 		Users newUser = new Users(this.getServletContext().getRealPath("/"));
+		Organizations org = new Organizations();
+		
+		try {
+			u = new Users(this.getServletContext().getRealPath("/"),newUser.getFullName(uname)[0],newUser.getFullName(uname)[1]);
+			o = new Organizations(org.getOrgName(uname));
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
+		
+		Clients client = new Clients(u,o);
 		
 		// Check if the username exists
 		try {
@@ -91,7 +108,10 @@ public class LoginServlet extends HttpServlet {
 				// User exists, so verify password
 				try {
 					if(newUser.authenticateUser(uname,passwd1)){
-						response.sendRedirect("flightSearchQuery.jsp");
+						
+						session.setAttribute("client", client);
+						RequestDispatcher rd = request.getRequestDispatcher("flightSearchQuery.jsp") ;
+						rd.include(request, response);
 					}
 					else{ // Incorrect password, so send an error message
 						request.setAttribute("password_error", "Incorrect password! Try again.");

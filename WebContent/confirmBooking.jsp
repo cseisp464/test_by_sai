@@ -6,6 +6,7 @@
 <%@ page import="java.util.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -46,6 +47,7 @@ $(document).ready(function(){
 	$("#NoFunds").hide();
 	$("#NoAccount").hide();
 	$("#NoRouting").hide();
+	$("#wrongPassword").hide();
 	
 	
 	$('#submit').click(function(event){
@@ -54,6 +56,11 @@ $(document).ready(function(){
 		
 		if($('#routing_number').val().length!=9){
 			alert("Routing number should be of 9-digts");
+			event.preventDefault();
+		}
+		
+		else if($('#password1').val().length!=3){
+			alert("Pin should be of 3-digts");
 			event.preventDefault();
 		}
 		
@@ -66,6 +73,9 @@ $(document).ready(function(){
 		    	var account_number =  $("#account_number").val();
 		    	var routing_number = $("#routing_number").val();
 		    	var total_cost= $("#total_cost").val();
+		    	var password = $("#password1").val();
+		    	var url = $("#url").val();
+		    	console.log(url);
 		    	
 		    	//alert("acc no: " + account_number + "  routing no: " + routing_number + "  cost: " + total_cost);
 		    	
@@ -78,6 +88,7 @@ $(document).ready(function(){
 			   		  		account_number: account_number,
 			   		  		routing_number: routing_number,
 			   		  		total_cost: total_cost,
+			   		  		password:password,
 			   		  		  		  	    			    
 			   			  },
 			   			  function(data,status){
@@ -93,8 +104,15 @@ $(document).ready(function(){
 			   			    	
 			   			    	//alert("Updating bookings");
 			   			    	return_status = data;
-			   			    	updateBookingHistory();
+			   			    	updateBookingHistory(url);
 			   			    	
+			   			    }
+			   			 	else if(data=="Entered Password is wrong <br/>"){
+			   			    	console.log(data);
+			   			    	$("#wrongPassword").slideDown(500)
+			                    .delay(5000)
+			                    .slideUp(500);
+			  			    	
 			   			    }
 			   			    else if(data=="Insufficient Balance <br/>"){
 			   			    	console.log(data);
@@ -123,18 +141,25 @@ $(document).ready(function(){
 	});
 	
 	$("#print").click(function(){
-		window.print();
+		
+		if( $("#age").val()=="" || $("#gender").val()=="" || $("#firstname").val()=="" || $("#lastname").val()=="" ){
+			alert("Enter your details correctly");
+		}
+		else{
+			window.print();
+		}
+		
 	});
 	
 });
 
-function updateBookingHistory(){
+function updateBookingHistory(url){
 	
 	var account_number =  $("#account_number").val();
 	console.log(account_number);
 	//alert("in update");
 	
-	$.post("UpdateBookingHistoryServlet",
+	$.post(url,
    			  {
    		  		account_number: account_number,
    		  		  		  	    			    
@@ -166,13 +191,54 @@ function updateBookingHistory(){
 <%@ page errorPage="/WEB-INF/noValuesInlistError.jsp" %>
 	<%@ include file="/WEB-INF/header.jsp" %>
 	
+	<c:choose>
+		<c:when test="${sessionScope.username==null}">
+			<c:redirect url="login.jsp" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="username" value="${sessionScope.username}" />
+		</c:otherwise>
+	</c:choose>
+	
+	<c:url value="/login.jsp" var="loginURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/UpdateBookingHistoryServlet" var="UpdateBookingHistoryServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/signup.jsp" var="signupURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/BookingHistoryServlet" var="BookingHistoryServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/LogoutServlet" var="LogoutServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>   
+	
+	<c:url value="/flightSearchQuery.jsp" var="flightSearchQueryURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url> 
+	
+	
+	
 	<div class="container">
 		<div class="jumbotron">
 		
 			<div id="NoAccount">
   			<h3 align="center">Sorry, Invalid Account!</h3>
   			<p align="center">The account number you have entered is invalid (or) the account no. and routing no. combination is wrong , please try again.</p>
-  			</div>   
+  			</div> 
+  			
+  			<div id="wrongPassword">
+  			<h3 align="center">Sorry, Wrong Password! Try Again</h3>
+  			</div>
+  			
+  			  
   			
   			<div id="NoRouting">
   			<h3 align="center">Sorry, Invalid Routing Number!</h3>
@@ -305,12 +371,23 @@ function updateBookingHistory(){
 									required> 
 							</div>
 							
+							<div class="form-group">
+							<label for="password1">3-digit Banking Pin</label>
+							<input 
+								type="password" 
+								class="form-control" 
+								id="password1" 
+								name="password1" 
+								required>
+							</div>
+							
 							<input type="hidden" id="total_cost" value="<%= session.getAttribute("total_purchaseCost") %>" />
 							
 				    </table>
+				    <input type="hidden" name="url" id="url" value="${UpdateBookingHistoryServletURL}" />
 				    <button id="submit"  class="btn btn-primary">Confirm Transaction</button>
 					&nbsp;&nbsp;
-					<a href="flightSearchQuery.jsp" class="btn btn-success">Cancel</a>
+					<a href="${flightSearchQueryURL}" class="btn btn-success">Cancel</a>
 					&nbsp;&nbsp;
 					<a href="login.jsp" class="btn btn-default pull-right">Logout</a>
 			</div>

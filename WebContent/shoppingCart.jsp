@@ -6,6 +6,7 @@
 <%@ page import="java.util.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -25,10 +26,10 @@
 
 <script>
 
-function editSeats(x,y,z){
+function editSeats(x,y,z,url){
 	//alert("plane no: " + x + " Ticket class " + y + "Flight id: " +z);
 	
-	$.get("ViewAndBookServlet?plane_number="+x+"&ticket_class="+y,function(data,status){
+	$.get("${ViewAndBookServletURL}?plane_number="+x+"&ticket_class="+y,function(data,status){
 	    //alert("Data: " + data + "\nStatus: " + status);
 
 	    var ticketsAvailable = parseInt(data);
@@ -79,7 +80,7 @@ function editSeats(x,y,z){
 	      var new_number_of_seats =  $('#newnumberoftickets'+x).val();
 		  
 		  
-		  $.post("UpdateCartServlet", 
+		  $.post(url, 
 			        {
 			        	plane_number: plane_number,
 			        	flight_number: flight_number,
@@ -137,6 +138,47 @@ color: Green;
 <%@ page errorPage="/WEB-INF/noValuesInlistError.jsp" %>
 	<%@ include file="/WEB-INF/header.jsp" %>
 	
+	<c:choose>
+		<c:when test="${sessionScope.username==null}">
+			<c:redirect url="login.jsp" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="username" value="${sessionScope.username}" />
+		</c:otherwise>
+	</c:choose>
+	
+	<c:url value="/confirmBooking.jsp" var="confirmBookingURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/ViewAndBookServlet" var="ViewAndBookServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/UpdateCartServlet" var="UpdateCartServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/EditCartServlet" var="EditCartServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/signup.jsp" var="signupURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/BookingHistoryServlet" var="BookingHistoryServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/LogoutServlet" var="LogoutServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>   
+	
+	<c:url value="/flightSearchQuery.jsp" var="flightSearchQueryURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url> 
+	
 	<div class="container">
 		<div class="jumbotron">
 			<h2 align="center">My Cart Page</h2> <br>
@@ -179,10 +221,10 @@ color: Green;
 								
 									 <tr>
 								   		<td>
-								   		<form action="EditCartServlet" method="post">
+								   		<form action="${EditCartServletURL}" method="post">
 								   			<c:out value="${flight.flight_id}"/>
 								   			<c:set var="fid" value="${flight.flight_id}" /> <br/><br/>
-								   			<button type="button" onclick="editSeats('${flight.plane_number}','${flight.flight_class}','${flight.flight_id}')" id="edit" class="btn btn-info">Edit</button><br/><br/>
+								   			<button type="button" onclick="editSeats('${flight.plane_number}','${flight.flight_class}','${flight.flight_id}','${UpdateCartServletURL}')" id="edit" class="btn btn-info">Edit</button><br/><br/>
 								   			<button type="submit" id="remove" class="btn btn-danger" value="${flight.flight_id}">Remove</button>
 								   			<input type="hidden" name="flight_number" id="flight_number" value="${flight.flight_id}" />
 								   			<input type="hidden" name="total_cost" id="total_cost" value="${flight.total_cost}" />
@@ -238,7 +280,7 @@ color: Green;
 							<c:set var="total_purchaseCost" value="${sum}" scope="session"  />
          			</tbody>
 			    </table>
-			    <a href="confirmBooking.jsp">
+			    <a href="${confirmBookingURL}">
 			    	<button type="button" id="book" class="btn btn-primary btn-lg btn-block">Check Out</button>
 			    </a>
 		</div>

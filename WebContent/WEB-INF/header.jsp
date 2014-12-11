@@ -20,19 +20,48 @@ $(document).ready(function(){
 				<a class="navbar-brand" href="#">Airline Reservation System</a>
 		</div>
         <!-- Collection of nav links, forms, and other content for toggling -->
+        
+        <c:url value="/BookingHistoryServlet" var="BookingHistoryServletURL">
+	  		<c:param name="sessionId" value="${pageContext.session.id}"/>
+		</c:url>
+		
+		<c:url value="/flightSearchQuery.jsp" var="flightSearchQueryURL">
+	  		<c:param name="sessionId" value="${pageContext.session.id}"/>
+		</c:url>  
+		
+		<c:url value="/LogoutServlet" var="LogoutServletURL">
+	  		<c:param name="sessionId" value="${pageContext.session.id}"/>
+		</c:url> 
+	
+	
         <div id="navbarCollapse" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Welcome <%= session.getAttribute("username") %> !<b class="caret"></b></a>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Welcome <c:out value="${sessionScope.client.user.fname}" /> 
+                    <c:out value="${sessionScope.client.user.lname}" />, <c:out value="${sessionScope.client.org.organization_name}" /> 
+                    <b class="caret"></b></a>
                     <ul role="menu" class="dropdown-menu">
                         <li><a href="signup.jsp">Register</a></li>
-                        <li><a href="flightSearchQuery.jsp">Search Flights</a></li>
-                        <li><a href="BookingHistoryServlet">Booking History</a></li>
+                        <li><a href="${flightSearchQueryURL}">Search Flights</a></li>
+                        <li><a href="${BookingHistoryServletURL}">Booking History</a></li>
                         <li class="divider"></li>
-                        <li><a href="LogoutServlet">Logout</a></li>
+                        <li><a href="${LogoutServletURL}">Logout</a></li>
+                        
+                        
+                        <!-- <li><a href="${signupURL}">Register</a></li>
+                        <li><a href="${flightSearchQueryURL}">Search Flights</a></li>
+                        <li><a href="${BookingHistoryServletURL}">Booking History</a></li>
+                        <li class="divider"></li>
+                        <li><a href="${LogoutServletURL}">Logout</a></li> -->
+                        
+                        
                     </ul>
                 </li>
             </ul>
         </div>
      </div>
 </nav>
+
+
+
+

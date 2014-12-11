@@ -2,6 +2,7 @@ package com.cseisp464.servlets;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +42,8 @@ public class LogoutServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		session.invalidate();
 		
-		response.sendRedirect("login.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("login.jsp") ;
+		rd.include(request, response);
 		
 	}
 

@@ -4,6 +4,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.text.*" %>
 <%@ page import="java.util.*" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -36,6 +37,32 @@ $(document).ready(function(){
 <body>
 <%@ page errorPage="/WEB-INF/noValuesInlistError.jsp" %>
 <%@ include file="/WEB-INF/header.jsp" %>
+
+	<c:choose>
+		<c:when test="${sessionScope.username==null}">
+			<c:redirect url="login.jsp" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="username" value="${sessionScope.username}" />
+		</c:otherwise>
+	</c:choose>
+
+	<c:url value="/signup.jsp" var="signupURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/BookingHistoryServlet" var="BookingHistoryServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/LogoutServlet" var="LogoutServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>   
+	
+	<c:url value="/flightSearchQuery.jsp" var="flightSearchQueryURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url> 
+
 <%
 	// checking if session exists, if not then redirect to login page
 	if(session.getAttribute("username") == null){
@@ -97,7 +124,7 @@ $(document).ready(function(){
 			</table>
 			
 								       
-					       <center><a href="flightSearchQuery.jsp" class="btn btn-warning">Home</a></center>
+					       <center><a href="${flightSearchQueryURL}" class="btn btn-warning">Home</a></center>
 		</div>
 	</div>
 	</div>

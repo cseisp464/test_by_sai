@@ -30,7 +30,14 @@ public class Users {
 	
 	public Users(String path){
 		// Storing the path to the properties file
-		path_to_properties_file = path+"\\WEB-INF\\classes\\users.properties";		
+		path_to_properties_file = path+"\\WEB-INF\\classes\\users.properties";	
+	}
+	
+	public Users(String path,String fn, String ln){
+		// Storing the path to the properties file
+		path_to_properties_file = path+"\\WEB-INF\\classes\\users.properties";	
+		setFname(fn);
+		setLname(ln);
 	}
 	
 	public void addUser(String firstname, String lastname, String emailAddress, String username, String password) throws IOException, NoSuchAlgorithmException{
@@ -68,6 +75,22 @@ public class Users {
 		
 	}
 	
+	public String getFname() {
+		return fname;
+	}
+
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+
+	public String getLname() {
+		return lname;
+	}
+
+	public void setLname(String lname) {
+		this.lname = lname;
+	}
+
 	/***
 	 * This function checks if username or email already exists in the USERS table.
 	 * If checking for username then the column_name should be exactly the name of the 'username' column in the USERS table 
@@ -176,6 +199,34 @@ public class Users {
 	private void closeDB(){
 		db.closeDBConnection();
 	}
+	
+	public String[] getFullName(String username) throws IOException, NoSuchAlgorithmException, SQLException{
+			
+			// List to hold the username 
+			ArrayList<Object> param =  new ArrayList<Object>();
+			// Adding the username to the list
+			param.add(username);
+			// Composing the query to check if the user exists
+			String query_string = "SELECT * FROM users" +  " WHERE username = ? ";
+			String[] name = {"1","2"};
+			
+			connectDB();
+			
+			ResultSet rs1 = db.queryDB(query_string, param);
+			// Moving the ResultSet cursor to first row
+			rs1.next();
+			
+			// Comparing the passwords : Encode the entered password along with the stored salt value to calculate the hash. 
+			// After calculating the hash, compare it with the hashed password stored in the database USERS table. 
+			// If both of hashes match then the user is an authenticated user
+			
+			name[0] = rs1.getString("firstname");
+			name[1] = rs1.getString("lastname");
+			
+			closeDB();
+			
+			return name;
+		}
 	
 	
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -38,9 +39,11 @@ $(document).ready(function() {
         var arrTime =  $("#arrTime").val();
         var operator = $("#operator").val();
         var duration = $("#duration").val();
+        var url = $("#url").val();
+        console.log(url);
                
         //console.log(numberOfTickets);
-        $.post("AddToCartServlet", 
+        $.post(url, 
         {
         	plane_number: plane_number,
         	flight_number: flight_number,
@@ -75,7 +78,7 @@ $(document).ready(function() {
     var plane_number= $("#plane_number").val();
     var ticket_class =  $("#ticket_class").val();
 
-    $.get("ViewAndBookServlet?plane_number="+plane_number+"&ticket_class="+ticket_class,function(data,status){
+    $.get("${ViewAndBookServletURL}?plane_number="+plane_number+"&ticket_class="+ticket_class,function(data,status){
     //alert("Data: " + data + "\nStatus: " + status);
 
     var ticketsAvailable = parseInt(data);
@@ -126,6 +129,48 @@ color: Green;
 	
 	<%@ include file="/WEB-INF/header.jsp" %>
 	
+	<c:choose>
+		<c:when test="${sessionScope.username==null}">
+			<c:redirect url="login.jsp" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="username" value="${sessionScope.username}" />
+		</c:otherwise>
+	</c:choose>
+	
+	<c:url value="/ViewAndBookServlet" var="ViewAndBookServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/AddToCartServlet" var="AddToCartServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+
+	<c:url value="/flightSearchResults.jsp" var="flightSearchResultsURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/shoppingCart.jsp" var="shoppingCartURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/signup.jsp" var="signupURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/BookingHistoryServlet" var="BookingHistoryServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/LogoutServlet" var="LogoutServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>   
+	
+	<c:url value="/flightSearchQuery.jsp" var="flightSearchQueryURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>                 
+
+	
 	<%
 	// checking if session exists, if not then redirect to login page
 		if(session.getAttribute("username") == null){
@@ -151,8 +196,8 @@ color: Green;
 					<div class="col-md-6 col-md-offset-3">
 						<legend><strong>Flight Details</strong></legend>
 						
-						<strong> From: <span class="sourceFont"><%= session.getAttribute("source") %></span><br/><input type="hidden" name="source" id="source" value="<%= session.getAttribute("source")%>" />
-						To: <span class="destinationFont"> <%= session.getAttribute("destination") %> </span></strong><input type="hidden" name="destination" id="destination" value="<%= session.getAttribute("destination")%>" />
+						<strong> From: <span class="sourceFont"> <c:out value="${sessionScope.source}"/></span><br/><input type="hidden" name="source" id="source" value="<%= session.getAttribute("source")%>" />
+						To: <span class="destinationFont"> <c:out value="${sessionScope.destination}"/> </span></strong><input type="hidden" name="destination" id="destination" value="<%= session.getAttribute("destination")%>" />
 						<input type="hidden" name="operator" id="operator" value="<%= session.getAttribute("operator")%>" />
 						
 							<table class="table table-striped">
@@ -232,16 +277,17 @@ color: Green;
 						            </tr>
 						        </tbody>  
 					    </table>
+					    <input type="hidden" name="url" id="url" value="${AddToCartServletURL}" />
 						<button class="btn btn-primary" name="add_to_cart" id="add_to_cart" value="add_to_cart">Add to Cart</button>
 									
 						
 						
 						&nbsp;&nbsp;
-						<a href="flightSearchResults.jsp" class="btn btn-success">Back to search results</a>
+						<a href="${flightSearchResultsURL}" class="btn btn-success">Back to search results</a>
 						&nbsp;&nbsp;
-						<a href="flightSearchQuery.jsp" class="btn btn-warning">Home</a>
+						<a href="${flightSearchQueryURL}" class="btn btn-warning">Home</a>
 						
-						<a href="shoppingCart.jsp" class="btn btn-info pull-right">Shopping Cart</a>
+						<a href="${shoppingCartURL}" class="btn btn-info pull-right">Shopping Cart</a>
 
 					</div>
 				</div>

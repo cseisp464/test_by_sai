@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -39,6 +40,10 @@ $(document).ready(function(){
 <title>Registration page</title>
 </head>
 <body>
+	
+	<c:url value="/RegistrationServlet" var="RegistrationServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
 
 	<nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -53,7 +58,7 @@ $(document).ready(function(){
 		<div class="jumbotron">
 			<h2 align="center">Welcome to the Online Air Ticket Reservation System!</h2>
 			<br>
-			<form action="RegistrationServlet" method="post" class="form-horizontal">
+			<form action="${RegistrationServletURL}" method="post" class="form-horizontal">
 				<div class ="row">
 					<div class="col-md-6 col-md-offset-3">
 						<legend><strong>Registration Form</strong></legend>
@@ -102,6 +107,26 @@ $(document).ready(function(){
 								<% if (request.getParameter("email")!=null){
 										out.print("value=" + request.getParameter("email"));
 										}%> 
+								required>
+						</div>
+						
+						<div class="form-group">
+							<label for="email">Organization Name</label>
+							<input 
+								type="text" 
+								class="form-control" 
+								id="org_name" 
+								name="org_name"
+								required>
+						</div>
+						
+						<div class="form-group">
+							<label for="email">Organization Address</label>
+							<input 
+								type="text" 
+								class="form-control" 
+								id="org_addr" 
+								name="org_addr"
 								required>
 						</div>
 						

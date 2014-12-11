@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -120,6 +121,37 @@ $(document).ready(function(){
 
 <%@ include file="/WEB-INF/header.jsp" %>
 	
+	<c:choose>
+		<c:when test="${sessionScope.username==null}">
+			<c:redirect url="login.jsp" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="username" value="${sessionScope.username}" />
+		</c:otherwise>
+	</c:choose>
+	
+	<c:url value="/FlightSearchQueryServlet" var="FlightSearchQueryServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/signup.jsp" var="signupURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/BookingHistoryServlet" var="BookingHistoryServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/LogoutServlet" var="LogoutServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>   
+	
+	<c:url value="/flightSearchQuery.jsp" var="flightSearchQueryURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url> 
+	
+	
+	
 	<%
 	// checking if session exists, if not then redirect to login page
 		if(session.getAttribute("username") == null){
@@ -132,7 +164,7 @@ $(document).ready(function(){
 		<div class="jumbotron">
 			<h2 align="center">Search your Flight!</h2> <br> 
 			
-			<form action="FlightSearchQueryServlet" method="post" class="form-horizontal"> <!--  FlightSearchQueryServlet flightSearchResults.jsp ui-widget -->
+			<form action="${FlightSearchQueryServletURL}" method="post" class="form-horizontal"> <!--  FlightSearchQueryServlet flightSearchResults.jsp ui-widget -->
 				<div class ="row">
 					<div class="col-md-6 col-md-offset-3">
 						

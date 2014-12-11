@@ -4,6 +4,7 @@
 <%@ page import="java.util.*" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -38,6 +39,35 @@ color: Green;
 <%@ page errorPage="/WEB-INF/noValuesInlistError.jsp" %>
 	<%@ include file="/WEB-INF/header.jsp" %>
 	
+	<c:choose>
+		<c:when test="${sessionScope.username==null}">
+			<c:redirect url="login.jsp" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="username" value="${sessionScope.username}" />
+		</c:otherwise>
+	</c:choose>
+	
+	<c:url value="/FlightSearchResultsServlet" var="FlightSearchResultsServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/signup.jsp" var="signupURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/BookingHistoryServlet" var="BookingHistoryServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>
+	
+	<c:url value="/LogoutServlet" var="LogoutServletURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url>   
+	
+	<c:url value="/flightSearchQuery.jsp" var="flightSearchQueryURL">
+	  <c:param name="sessionId" value="${pageContext.session.id}"/>
+	</c:url> 
+	
 	<%
 	// checking if session exists, if not then redirect to login page
 		if(session.getAttribute("username") == null){
@@ -50,8 +80,8 @@ color: Green;
 		<div class="jumbotron">
 			<h2 align="center">Flight Search Results</h2> <br>
 			
-			<legend><strong>From: <span class="sourceFont"><%= session.getAttribute("source") %></span> <br/>
-			 				To: <span class="destinationFont"><%= session.getAttribute("destination") %></span></strong>
+			<legend><strong>From: <span class="sourceFont"> <c:out value="${sessionScope.source}"/></span> <br/>
+			 				To: <span class="destinationFont"><c:out value="${sessionScope.destination}"/></span></strong>
 			 </legend>
 				<table class="table table-striped">
 			        <thead>
@@ -89,7 +119,7 @@ color: Green;
 						%>
 						<% int stops = 0; %>
 						<td>$<%=cost %> <br/> 
-							<form action="FlightSearchResultsServlet" method="post">
+							<form action="${FlightSearchResultsServletURL}" method="post">
 								<input type="hidden" name="flight_number" value="<%=flight_number%>" />
 								<input type="hidden" name="plane_number" value="<%=plane_number%>" />
 								<input type="hidden" name="stops" value="<%=stops%>" />

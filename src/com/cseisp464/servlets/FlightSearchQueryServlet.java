@@ -197,7 +197,8 @@ public class FlightSearchQueryServlet extends HttpServlet {
 		
 		// if the value of list is 0, then redirect to a no results page
 		if(flights_list.size() == 0){
-			response.sendRedirect("noFlightSearchResults.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("noFlightSearchResults.jsp") ;
+			rd.include(request, response);
 		}
 		
 		session.setAttribute("flightsBean", flights_list);

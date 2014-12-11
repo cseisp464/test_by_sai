@@ -59,10 +59,14 @@ public class RegistrationServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String uname = request.getParameter("username");
 		String passwd1 = request.getParameter("password1");
+		String org_name = request.getParameter("org_name");
+		String org_addr = request.getParameter("org_addr");
 		
 		
 		// Creating an instance of the user class with project's root path as the parameter to the constructor
-		Users newUser = new Users(this.getServletContext().getRealPath("/")); 
+		Users newUser = new Users(this.getServletContext().getRealPath("/"),fname,lname); 
+		
+		Organizations newOrg = new Organizations(org_name);
 		
 		// Check if the username exists
 		try {
@@ -70,11 +74,17 @@ public class RegistrationServlet extends HttpServlet {
 				
 				try {
 					newUser.addUser(fname,lname,email,uname,passwd1);
+					newOrg.addOrg(org_name, org_addr, uname);
 				} catch (NoSuchAlgorithmException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				response.sendRedirect("login.jsp");
+				
+				Clients client = new Clients(newUser,newOrg);
+				HttpSession session = request.getSession();
+				session.setAttribute("client", client);
+				RequestDispatcher rd = request.getRequestDispatcher("login.jsp") ;
+				rd.include(request, response);
 			}else{ 
 				if(newUser.checkIfValueExists("username", uname)){
 					// If the username exists then ask the user to sign up using a different username
